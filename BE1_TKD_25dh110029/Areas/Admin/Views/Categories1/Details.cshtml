@@ -1,0 +1,24 @@
+﻿@model BE1_TKD_25dh110029.Models.Category
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">Chi Tiết Danh Mục</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tên Danh Mục
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Cập Nhập", "Edit", new { id = Model.CategoryID }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Quay Lại Danh Sách", "Index", null, new { @class = "btn btn-primary" })
+</p>

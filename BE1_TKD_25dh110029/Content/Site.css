@@ -1,0 +1,73 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Thanh menu */
+.navbar .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .navbar .navbar-nav li {
+        display: block;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+        .navbar .navbar-nav li a {
+            display: block;
+            color: #ddd;
+            text-decoration: none;
+            padding: 10px 0;
+        }
+
+            .navbar .navbar-nav li a:hover {
+                color: white;
+            }
+
+.navbar .navbar-brand {
+    color: white !important;
+    text-decoration: none;
+    margin-right: 24px;
+    white-space: nowrap;
+}
+
+/* FIX MENU DÍNH CHỮ */
+.navbar .navbar-nav {
+    display: flex !important;
+    align-items: center;
+    gap: 25px !important;
+}
+
+    .navbar .navbar-nav li {
+        margin-right: 0 !important;
+    }
+
+        .navbar .navbar-nav li a {
+            display: block;
+            text-decoration: none;
+        }
+

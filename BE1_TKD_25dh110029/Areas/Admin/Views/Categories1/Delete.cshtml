@@ -1,0 +1,33 @@
+﻿@model BE1_TKD_25dh110029.Models.Category
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">XÓA DANH MỤC</h2>
+
+<h4 class="alert-danger">Bạn thực sự muốn xóa sản phẩm này à?</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            <div class="control-label col-md-2">Tên danh mục</div>
+            <div class="col-md-10">
+                <p class="form-control-static">@Html.DisplayFor(model => model.CategoryName)</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Xóa" class="btn btn-primary" />
+                @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+}
