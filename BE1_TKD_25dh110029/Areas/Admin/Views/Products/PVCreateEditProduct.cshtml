@@ -1,0 +1,171 @@
+﻿
+@model BE1_TKD_25dh110029.Models.Product
+
+<style>
+    .product-form {
+        color: #3D3510;
+    }
+
+    .product-form .form-group {
+        margin-bottom: 22px;
+    }
+
+    .product-form .control-label {
+        color: #66551A;
+        font-weight: 700;
+        padding-top: 10px;
+    }
+
+    .product-form .form-control {
+        width: 100%;
+        min-height: 42px;
+        padding: 10px 12px;
+        box-sizing: border-box;
+        border: 1px solid #D9C77A;
+        border-radius: 7px;
+        background-color: #FFFDF5;
+        color: #3D3510;
+        box-shadow: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .product-form .form-control:focus {
+        border-color: #C5A72E;
+        box-shadow: 0 0 0 3px rgba(212, 184, 63, 0.2);
+        outline: none;
+    }
+
+    .product-form textarea.form-control {
+        min-height: 140px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .product-form .field-validation-error {
+        display: block;
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .product-form .input-hint {
+        color: #8B7A3E;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    @@media (max-width: 767px) {
+        .product-form .control-label {
+            text-align: left;
+            padding-bottom: 8px;
+        }
+    }
+</style>
+
+<div class="product-form">
+
+    <div class="form-group">
+        <label class="control-label col-md-2">DANH MỤC</label>
+        <div class="col-md-10">
+            @Html.DropDownList(
+                "CategoryID",
+                null,
+                htmlAttributes: new { @class = "form-control" }
+            )
+            @Html.ValidationMessageFor(
+                model => model.CategoryID,
+                "",
+                new { @class = "text-danger" }
+            )
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">TÊN SẢN PHẨM</label>
+        <div class="col-md-10">
+            @Html.EditorFor(
+                model => model.ProductName,
+                new
+                {
+                    htmlAttributes = new
+                    {
+                        @class = "form-control",
+                        placeholder = "Nhập tên sản phẩm..."
+                    }
+                }
+            )
+            @Html.ValidationMessageFor(
+                model => model.ProductName,
+                "",
+                new { @class = "text-danger" }
+            )
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">MÔ TẢ</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(
+                model => model.ProductDecription,
+                new
+                {
+                    @class = "form-control",
+                    placeholder = "Nhập mô tả sản phẩm..."
+                }
+            )
+            @Html.ValidationMessageFor(
+                model => model.ProductDecription,
+                "",
+                new { @class = "text-danger" }
+            )
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">ĐƠN GIÁ</label>
+        <div class="col-md-10">
+            @Html.EditorFor(
+                model => model.ProductPrice,
+                new
+                {
+                    htmlAttributes = new
+                    {
+                        @class = "form-control",
+                        placeholder = "Nhập đơn giá...",
+                        type = "number",
+                        min = "0",
+                        step = "any"
+                    }
+                }
+            )
+            @Html.ValidationMessageFor(
+                model => model.ProductPrice,
+                "",
+                new { @class = "text-danger" }
+            )
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">HÌNH ẢNH</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(
+                model => model.ProductImage,
+                new
+                {
+                    @class = "form-control",
+                    placeholder = "Nhập đường dẫn hình ảnh..."
+                }
+            )
+            @Html.ValidationMessageFor(
+                model => model.ProductImage,
+                "",
+                new { @class = "text-danger" }
+            )
+            <div class="input-hint">
+                Nhập đường dẫn hình ảnh của sản phẩm.
+            </div>
+        </div>
+    </div>
+
+</div>

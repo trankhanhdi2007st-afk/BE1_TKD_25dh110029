@@ -1,0 +1,117 @@
+﻿
+@model BE1_TKD_25dh110029.Models.Product
+
+<style>
+    .product-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+        padding: 10px 0;
+        color: #3D3510;
+    }
+
+    .product-info-image {
+        flex: 0 0 320px;
+        max-width: 100%;
+        text-align: center;
+        padding: 15px;
+        background: #FFF8DF;
+        border: 1px solid #E8DCA8;
+        border-radius: 10px;
+    }
+
+        .product-info-image img {
+            width: 100%;
+            max-width: 290px;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+    .product-info-details {
+        flex: 1;
+        min-width: 220px;
+    }
+
+        .product-info-details dl {
+            margin: 0;
+        }
+
+        .product-info-details dt {
+            margin-top: 15px;
+            margin-bottom: 6px;
+            color: #66551A;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+            .product-info-details dt:first-child {
+                margin-top: 0;
+            }
+
+        .product-info-details dd {
+            margin: 0;
+            padding: 12px 14px;
+            background: #FFFDF5;
+            border: 1px solid #E8DCA8;
+            border-radius: 6px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+    .product-info-price {
+        color: #8B7010;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .product-info-description {
+        min-height: 80px;
+        white-space: pre-wrap;
+    }
+
+    @@media (max-width: 600px) {
+        .product-info {
+            flex-direction: column;
+        }
+
+        .product-info-image {
+            flex-basis: auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+            .product-info-image img {
+                max-height: 280px;
+            }
+    }
+</style>
+
+<div class="product-info">
+    <div class="product-info-image">
+        <img src="@Url.Content(Model.ProductImage ?? "")"
+             alt="@Model.ProductName" />
+    </div>
+
+    <div class="product-info-details">
+        <dl>
+            <dt>Tên sản phẩm</dt>
+            <dd>@Html.DisplayFor(model => model.ProductName)</dd>
+
+            <dt>Mô tả</dt>
+            <dd class="product-info-description">
+                @Html.DisplayFor(model => model.ProductDecription)
+            </dd>
+
+            <dt>Đơn giá</dt>
+            <dd class="product-info-price">
+                @Html.DisplayFor(model => model.ProductPrice)
+            </dd>
+
+            <dt>Danh mục</dt>
+            <dd>
+                @Html.DisplayFor(model => model.Category.CategoryName)
+            </dd>
+        </dl>
+    </div>
+</div>

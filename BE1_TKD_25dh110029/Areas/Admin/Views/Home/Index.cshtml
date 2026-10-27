@@ -1,7 +1,24 @@
 ﻿
+@model IEnumerable<BE1_TKD_25dh110029.Models.Category>
+
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>TRANG QUẢNG TRỊ </h2>
+<style>   
+    .admin-index-title {
+        color: #66551A;
+        background-color: #F3E5AB;
+        font-size: 28px;
+        font-weight: 700;
+        padding: 14px 18px;
+        margin: 10px 0 25px;
+        border-left: 5px solid #D4B83F;
+        border-radius: 5px;
+        box-shadow: none;
+        text-transform: uppercase;
+    }   
+</style>
 
+<h2 class="admin-index-title">TRANG QUẢN TRỊ</h2>

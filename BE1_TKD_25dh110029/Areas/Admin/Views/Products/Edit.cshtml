@@ -1,0 +1,129 @@
+﻿
+@model BE1_TKD_25dh110029.Models.Product
+
+@{
+    ViewBag.Title = "Cập nhật sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .product-edit-page {
+        max-width: 1000px;
+        margin: 25px auto;
+        padding: 0 15px;
+        color: #3D3510;
+    }
+
+    .product-edit-title {
+        background-color: #F3E5AB;
+        color: #66551A;
+        padding: 16px 20px;
+        border-left: 6px solid #D4B83F;
+        border-radius: 7px;
+        margin-bottom: 25px;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .product-edit-card {
+        background-color: #FFFDF5;
+        border: 1px solid #E8DCA8;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 4px 12px rgba(102, 85, 26, 0.08);
+    }
+
+        .product-edit-card .form-control {
+            border: 1px solid #D9C77A;
+            border-radius: 6px;
+            box-shadow: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+            .product-edit-card .form-control:focus {
+                border-color: #C5A72E;
+                box-shadow: 0 0 0 3px rgba(212, 184, 63, 0.18);
+            }
+
+        .product-edit-card label {
+            color: #66551A;
+            font-weight: 600;
+        }
+
+    .product-edit-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #E8DCA8;
+    }
+
+    .product-edit-btn {
+        display: inline-block;
+        min-width: 100px;
+        padding: 9px 18px;
+        text-align: center;
+        background-color: #D4B83F;
+        color: #3D3510 !important;
+        border: 1px solid #C5A72E;
+        border-radius: 5px;
+        text-decoration: none !important;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .product-edit-btn:hover {
+            background-color: #A98B12;
+            color: #FFFFFF !important;
+            border-color: #A98B12;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 85, 26, 0.2);
+        }
+
+    @@media (max-width: 600px) {
+        .product-edit-card {
+            padding: 16px;
+        }
+
+        .product-edit-title {
+            font-size: 21px;
+        }
+    }
+</style>
+
+<div class="product-edit-page">
+    <h2 class="product-edit-title">
+        CẬP NHẬT SẢN PHẨM
+    </h2>
+
+    <div class="product-edit-card">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ProductID)
+
+            @Html.Partial("PVCreateEditProduct", Model)
+
+            <div class="product-edit-actions">
+                <button type="submit" class="product-edit-btn">
+                    Lưu thay đổi
+                </button>
+
+                @Html.ActionLink(
+                    "Quay lại danh sách",
+                    "Index",
+                    null,
+                    new { @class = "product-edit-btn" }
+                )
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

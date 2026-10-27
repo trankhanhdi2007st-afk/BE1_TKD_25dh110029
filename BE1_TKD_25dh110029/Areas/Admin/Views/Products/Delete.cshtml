@@ -1,0 +1,176 @@
+﻿
+@model BE1_TKD_25dh110029.Models.Product
+
+@{
+    ViewBag.Title = "Xóa sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .delete-page {
+        color: #66551A;
+        padding-bottom: 30px;
+    }
+
+    .delete-title {
+        background-color: #F3E5AB;
+        color: #66551A;
+        padding: 16px 20px;
+        border-left: 6px solid #D4B83F;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        font-size: 24px;
+        font-weight: 750;
+    }
+
+    .delete-card {
+        max-width: 850px;
+        padding: 28px;
+        background: #FFFDF5;
+        border: 1px solid #E8DCA8;
+        border-radius: 12px;
+        box-shadow: 0 6px 22px rgba(102, 85, 26, .08);
+    }
+
+    .delete-warning {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px 18px;
+        margin-bottom: 24px;
+        background: #FFF1F0;
+        border: 1px solid #F3C4C0;
+        border-left: 5px solid #DC3545;
+        border-radius: 8px;
+        color: #9F252E;
+    }
+
+    .warning-icon {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+    .warning-heading {
+        margin: 0 0 5px;
+        font-size: 16px;
+        font-weight: 750;
+    }
+
+    .warning-description {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .delete-divider {
+        border: 0;
+        border-top: 1px solid #E8DCA8;
+        margin: 22px 0;
+    }
+
+    .delete-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .delete-btn {
+        display: inline-block;
+        padding: 10px 19px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none !important;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+    .delete-btn-danger {
+        background: #DC3545;
+        border-color: #DC3545;
+        color: #FFFFFF;
+    }
+
+        .delete-btn-danger:hover {
+            background: #B91C2C;
+            border-color: #B91C2C;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(220, 53, 69, .22);
+        }
+
+    .delete-btn-back {
+        background: #D4B83F;
+        border-color: #C5A72E;
+        color: #3D3510 !important;
+    }
+
+        .delete-btn-back:hover {
+            background: #A98B12;
+            border-color: #A98B12;
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 85, 26, .2);
+        }
+
+    @@media (max-width: 600px) {
+        .delete-card {
+            padding: 18px;
+        }
+
+        .delete-title {
+            font-size: 21px;
+        }
+    }
+</style>
+
+<div class="delete-page">
+
+    <h2 class="delete-title">
+        XÓA SẢN PHẨM
+    </h2>
+
+    <div class="delete-card">
+
+        <div class="delete-warning">
+            <div>
+                <h4 class="warning-heading">
+                    Bạn có chắc chắn muốn xóa sản phẩm này?
+                </h4>
+                <p class="warning-description">
+                    Hành động này có thể không khôi phục được.
+                    Vui lòng kiểm tra thông tin sản phẩm trước khi xác nhận.
+                </p>
+            </div>
+        </div>
+
+        @Html.Partial("PVProdInfo", Model)
+
+        <hr class="delete-divider" />
+
+        @using (Html.BeginForm(
+            "Delete",
+            "Products",
+            new { id = Model.ProductID },
+            FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="delete-actions">
+                <input type="submit"
+                       value="Xác nhận xóa"
+                       class="delete-btn delete-btn-danger"
+                       onclick="return confirm('Diki có chắc chắn muốn xóa sản phẩm này không?');" />
+
+                @Html.ActionLink(
+                    "← Quay lại danh sách",
+                    "Index",
+                    null,
+                    new { @class = "delete-btn delete-btn-back" })
+            </div>
+        }
+
+    </div>
+</div>

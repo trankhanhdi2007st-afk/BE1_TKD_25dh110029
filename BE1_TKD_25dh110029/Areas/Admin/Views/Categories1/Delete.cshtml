@@ -1,32 +1,136 @@
-﻿@model BE1_TKD_25dh110029.Models.Category
+﻿
+@model BE1_TKD_25dh110029.Models.Category
 
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="bg-success">XÓA DANH MỤC</h2>
+<style>
+    .category-delete-title {
+        background-color: #F3E5AB;
+        color: #66551A;
+        padding: 12px 16px;
+        border-left: 6px solid #D4B83F;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
 
-<h4 class="alert-danger">Bạn thực sự muốn xóa sản phẩm này à?</h4>
+    .category-delete-warning {
+        background-color: #FFF8DF;
+        color: #66551A;
+        border: 1px solid #E8DCA8;
+        border-left: 5px solid #D4B83F;
+        border-radius: 6px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+    }
+
+    .category-delete-card {
+        background-color: #FFFDF5;
+        border: 1px solid #E8DCA8;
+        border-radius: 8px;
+        padding: 20px;
+        color: #3D3510;
+    }
+
+        .category-delete-card hr {
+            border-top: 1px solid #E8DCA8;
+        }
+
+    .category-delete-label {
+        color: #66551A;
+        font-weight: 700;
+    }
+
+    .category-delete-name {
+        display: inline-block;
+        min-height: 35px;
+        padding: 7px 12px;
+        background-color: #FFF8DF;
+        border: 1px solid #E8DCA8;
+        border-radius: 5px;
+        color: #3D3510;
+    }
+
+    .category-delete-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .category-delete-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #D4B83F;
+        color: #3D3510 !important;
+        border: 1px solid #C5A72E;
+        border-radius: 5px;
+        text-decoration: none !important;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .category-delete-btn:hover {
+            background-color: #A98B12;
+            color: #FFFFFF !important;
+            border-color: #A98B12;
+        }
+
+    .category-delete-btn-danger {
+        background-color: #B83B32;
+        border-color: #A8322A;
+        color: #FFFFFF !important;
+    }
+
+        .category-delete-btn-danger:hover {
+            background-color: #922820;
+            border-color: #922820;
+            color: #FFFFFF !important;
+        }
+</style>
+
+<h2 class="category-delete-title">XÓA DANH MỤC</h2>
+
+<h4 class="category-delete-warning">
+    Bạn có chắc chắn muốn xóa danh mục này không?
+</h4>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div class="form-horizontal category-delete-card">
         <hr />
 
         <div class="form-group">
-            <div class="control-label col-md-2">Tên danh mục</div>
+            <div class="control-label col-md-2 category-delete-label">
+                Tên danh mục
+            </div>
+
             <div class="col-md-10">
-                <p class="form-control-static">@Html.DisplayFor(model => model.CategoryName)</p>
+                <p class="form-control-static category-delete-name">
+                    @Html.DisplayFor(model => model.CategoryName)
+                </p>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Xóa" class="btn btn-primary" />
-                @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-primary" })
+            <div class="col-md-offset-2 col-md-10 category-delete-actions">
+                <input type="submit"
+                       value="Xóa"
+                       class="category-delete-btn category-delete-btn-danger"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?');" />
+
+                @Html.ActionLink(
+                    "Quay lại danh sách",
+                    "Index",
+                    null,
+                    new { @class = "category-delete-btn" }
+                )
             </div>
         </div>
     </div>

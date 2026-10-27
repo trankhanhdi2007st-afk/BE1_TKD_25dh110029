@@ -1,0 +1,162 @@
+﻿
+@model BE1_TKD_25dh110029.Models.Product
+
+@{
+    ViewBag.Title = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .create-page {
+        color: #66551A;
+        padding-bottom: 30px;
+    }
+
+    .create-title {
+        background-color: #F3E5AB;
+        color: #66551A;
+        padding: 16px 20px;
+        border-left: 6px solid #D4B83F;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        font-size: 24px;
+        font-weight: 750;
+        box-shadow: 0 4px 12px rgba(102, 85, 26, .08);
+    }
+
+    .create-card {
+        max-width: 900px;
+        padding: 28px;
+        background: #FFFDF5;
+        border: 1px solid #E8DCA8;
+        border-radius: 12px;
+        box-shadow: 0 6px 22px rgba(102, 85, 26, .08);
+    }
+
+    .create-subtitle {
+        margin: 0;
+        color: #66551A;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .create-description {
+        margin-top: 8px;
+        color: #8A7A42;
+        font-size: 13px;
+    }
+
+    .create-divider {
+        border: 0;
+        border-top: 1px solid #E8DCA8;
+        margin: 20px 0 25px;
+    }
+
+    .create-page .form-control {
+        border: 1px solid #DCCB83;
+        border-radius: 7px;
+        background-color: #FFFFFF;
+        color: #3D3510;
+        box-shadow: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+        .create-page .form-control:focus {
+            border-color: #D4B83F;
+            box-shadow: 0 0 0 3px rgba(212, 184, 63, .2);
+        }
+
+    .create-page label {
+        color: #66551A;
+        font-weight: 650;
+    }
+
+    .create-page .text-danger {
+        color: #B42318;
+    }
+
+    .create-btn {
+        display: inline-block;
+        padding: 10px 18px;
+        margin: 5px 5px 0 0;
+        border: 1px solid #C5A72E;
+        border-radius: 7px;
+        background: #D4B83F;
+        color: #3D3510 !important;
+        font-weight: 700;
+        text-decoration: none !important;
+        transition: all .2s ease;
+    }
+
+        .create-btn:hover {
+            background: #A98B12;
+            border-color: #A98B12;
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 85, 26, .2);
+        }
+
+    .create-btn-back {
+        background: #FFFFFF;
+        border-color: #DCCB83;
+    }
+
+        .create-btn-back:hover {
+            background: #FFF3C4;
+            color: #66551A !important;
+        }
+
+    @@media (max-width: 600px) {
+        .create-card {
+            padding: 18px;
+        }
+
+        .create-title {
+            font-size: 21px;
+        }
+    }
+</style>
+
+<div class="create-page">
+
+    <h2 class="create-title">
+        ＋ THÊM SẢN PHẨM
+    </h2>
+
+    <div class="create-card">
+
+        <h4 class="create-subtitle">Thông tin sản phẩm</h4>
+
+        <p class="create-description">
+            Điền thông tin bên dưới để thêm sản phẩm mới vào cửa hàng.
+        </p>
+
+        <hr class="create-divider" />
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(
+                    true, "", new { @class = "text-danger" })
+
+                @Html.Partial("PVCreateEditProduct", Model)
+
+            </div>
+        }
+
+        <hr class="create-divider" />
+
+        <div>
+            @Html.ActionLink("← Quay lại danh sách", "Index",
+                null, new { @class = "create-btn create-btn-back" })
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
