@@ -1,0 +1,242 @@
+﻿
+@model BE1_TKD_25dh110029.Models.ViewModel.HomeProductVM
+
+@if (Model.NewProducts != null && Model.NewProducts.Any())
+{
+    <style>
+        .listProduct {
+            margin-bottom: 25px;
+        }
+
+            .listProduct h2 {
+                color: #66551A;
+                background-color: #F3E5AB;
+                border-left: 5px solid #D4B83F;
+                border-radius: 5px;
+                padding: 12px 18px;
+                margin-bottom: 15px;
+                font-size: 22px;
+                font-weight: 700;
+            }
+
+            /* Khung chứa thanh trượt */
+            .listProduct .list-container {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 12px;
+                width: 100%;
+                padding: 14px;
+                margin: 0;
+                box-sizing: border-box;
+                list-style: none;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-behavior: smooth;
+                scroll-snap-type: x mandatory;
+                background-color: #FFFDF5;
+                border: 1px solid #E8DCA8;
+                border-radius: 8px;
+            }
+
+                /* Thanh cuộn ngang */
+                .listProduct .list-container::-webkit-scrollbar {
+                    height: 10px;
+                }
+
+                .listProduct .list-container::-webkit-scrollbar-track {
+                    background: #FFF8DF;
+                    border-radius: 10px;
+                }
+
+                .listProduct .list-container::-webkit-scrollbar-thumb {
+                    background: #D4B83F;
+                    border-radius: 10px;
+                }
+
+                    .listProduct .list-container::-webkit-scrollbar-thumb:hover {
+                        background: #A98B12;
+                    }
+
+            /* Mỗi thẻ sản phẩm */
+            .listProduct .product-item {
+                flex: 0 0 220px;
+                min-width: 220px;
+                box-sizing: border-box;
+                padding: 10px;
+                overflow: hidden;
+                background-color: #FFFDF5;
+                border: 1px solid #E8DCA8;
+                border-radius: 8px;
+                scroll-snap-align: start;
+                transition: all 0.2s ease;
+            }
+
+                .listProduct .product-item:hover {
+                    background-color: #FFF8DF;
+                    border-color: #D4B83F;
+                    transform: translateY(-3px);
+                    box-shadow: 0 4px 10px rgba(102, 85, 26, 0.12);
+                }
+
+                .listProduct .product-item a {
+                    display: block;
+                    width: 100%;
+                }
+
+                .listProduct .product-item img {
+                    display: block;
+                    width: 100%;
+                    max-width: 100%;
+                    height: 140px;
+                    object-fit: contain;
+                    box-sizing: border-box;
+                    padding: 4px;
+                    background-color: #FFFFFF;
+                }
+
+            .listProduct .prodPrice {
+                color: #A98B12;
+                font-size: 15px;
+                font-weight: 700;
+                margin: 10px 0 6px;
+                overflow-wrap: anywhere;
+            }
+
+            .listProduct .prodName {
+                color: #66551A;
+                font-size: 14px;
+                font-weight: 700;
+                min-height: 38px;
+                overflow-wrap: anywhere;
+                margin: 6px 0;
+            }
+
+            .listProduct .prodCate {
+                color: #66551A;
+                font-size: 13px;
+                margin: 8px 0 0;
+                overflow-wrap: anywhere;
+            }
+
+            .listProduct .prodSale {
+                color: #3D3510;
+                font-size: 13px;
+                margin-top: 18px;
+            }
+
+        @@media (max-width: 900px) {
+            .listProduct .product-item {
+                flex-basis: 220px;
+            }
+        }
+
+        @@media (max-width: 500px) {
+            .listProduct .product-item {
+                flex-basis: 180px;
+                min-width: 180px;
+            }
+
+                .listProduct .product-item img {
+                    height: 120px;
+                }
+        }
+        .listProduct .list-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            cursor: grab;
+            scroll-behavior: smooth;
+            scroll-snap-type: x proximity;
+            scrollbar-width: auto;
+            scrollbar-color: #D4B83F #FFF8DF;
+            box-sizing: border-box;
+        }
+
+            .listProduct .list-container:active {
+                cursor: grabbing;
+            }
+
+        .listProduct .product-item {
+            flex: 0 0 220px;
+            width: 220px;
+            min-width: 220px;
+            scroll-snap-align: start;
+            box-sizing: border-box;
+        }
+        .listProduct .list-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            cursor: grab;
+            scroll-behavior: smooth;
+            scroll-snap-type: x proximity;
+            scrollbar-width: auto;
+            scrollbar-color: #D4B83F #FFF8DF;
+            box-sizing: border-box;
+        }
+
+            .listProduct .list-container:active {
+                cursor: grabbing;
+            }
+
+        .listProduct .product-item {
+            flex: 0 0 220px;
+            width: 220px;
+            min-width: 220px;
+            scroll-snap-align: start;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <section class="listProduct">
+        <h2>Sản phẩm đã bán</h2>
+
+        <ul class="list-container">
+            @foreach (var product in Model.NewProducts)
+            {
+                <li class="product-item">
+                    <a href="@Url.Action(
+                        "ProductDetail",
+                        "Home",
+                        new { id = product.ProductID })">
+                        <img src="@Url.Content(product.ProductImage ?? "")"
+                             alt="@product.ProductName" />
+                    </a>
+
+                    <p class="prodPrice">
+                        @Html.DisplayFor(m => product.ProductPrice)
+                    </p>
+
+                    <p class="prodName">
+                        @product.ProductName
+                    </p>
+
+                    <p class="prodCate">
+                        @(product.Category != null
+                            ? product.Category.CategoryName
+                            : "")
+                    </p>
+
+                    <p class="prodSale">
+                        Đã bán:
+                        @(product.OrderDetails != null
+                            ? product.OrderDetails.Count()
+                            : 0)
+                    </p>
+                </li>
+            }
+        </ul>
+    </section>
+}
+else
+{
+    <p>Không tìm thấy sản phẩm phù hợp.</p>
+}

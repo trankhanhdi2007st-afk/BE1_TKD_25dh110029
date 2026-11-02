@@ -1,0 +1,138 @@
+﻿
+@model BE1_TKD_25dh110029.Models.Product
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+}
+
+<style>
+    .detail-container {
+        background: #FFFDF5;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px auto;
+    }
+
+    .detail-image {
+        background: #FFF8DF;
+        border: 1px solid #E8D99B;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+    }
+
+        .detail-image img {
+            width: 100%;
+            max-height: 420px;
+            object-fit: contain;
+        }
+
+    .detail-info h2 {
+        color: #3D3510;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .detail-price {
+        color: #A98B12;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 20px 0;
+    }
+
+    .detail-category {
+        display: inline-block;
+        background: #FFF0B8;
+        color: #66551A;
+        padding: 8px 15px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+
+    .gold-button {
+        display: inline-block;
+        background: #D4B83F;
+        color: #3D3510;
+        padding: 13px 25px;
+        border-radius: 8px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+    }
+
+        .gold-button:hover {
+            background: #A98B12;
+            color: white;
+        }
+
+    .back-link {
+        display: inline-block;
+        color: #66551A;
+        margin-top: 25px;
+        text-decoration: none;
+    }
+</style>
+
+<div class="container detail-container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="detail-image">
+                <img src="@Url.Content(
+                    string.IsNullOrWhiteSpace(Model.ProductImage)
+                    ? "~/Content/no-image.svg"
+                    : Model.ProductImage)"
+                     alt="@Model.ProductName" />
+            </div>
+        </div>
+
+        <div class="col-md-6 detail-info">
+            <h2>@Model.ProductName</h2>
+
+            <div class="detail-category">
+                @(Model.Category == null
+                    ? "Sản phẩm"
+                    : Model.Category.CategoryName)
+            </div>
+
+            <div class="detail-price">
+                @Model.ProductPrice.ToString("N0") VP
+            </div>
+
+            <h4>Mô tả sản phẩm</h4>
+            <p>
+                @(string.IsNullOrWhiteSpace(Model.ProductDecription)
+                    ? "Chưa có mô tả cho sản phẩm này."
+                    : Model.ProductDecription)
+            </p>
+
+
+            @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+            {
+                @Html.Hidden("id", Model.ProductID)
+
+                <div style="margin-bottom:15px;">
+                    <label>Số lượng:</label>
+                    <input type="number"
+                           name="quantity"
+                           value="1"
+                           min="1"
+                           max="99"
+                           style="width:80px;padding:8px;border:1px solid #D4B83F;border-radius:6px;" />
+                </div>
+
+                <button type="submit" class="gold-button">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            }
+
+
+            <br />
+
+            <a href="@Url.Action("ProductList", "Home")"
+               class="back-link">
+                ← Quay lại danh sách sản phẩm
+            </a>
+        </div>
+    </div>
+</div>
+

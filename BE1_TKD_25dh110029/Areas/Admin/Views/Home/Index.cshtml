@@ -1,24 +1,129 @@
 ﻿
-@model IEnumerable<BE1_TKD_25dh110029.Models.Category>
+@model BE1_TKD_25dh110029.Models.ViewModel.HomeProductVM
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>   
+
+<style>
     .admin-index-title {
         color: #66551A;
         background-color: #F3E5AB;
         font-size: 28px;
         font-weight: 700;
         padding: 14px 18px;
-        margin: 10px 0 25px;
+        margin: 10px 0 22px;
         border-left: 5px solid #D4B83F;
         border-radius: 5px;
-        box-shadow: none;
-        text-transform: uppercase;
-    }   
+    }
+
+    .feature-container,
+    .list-container {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 12px;
+        padding: 14px;
+        margin: 0 0 24px;
+        width: 100%;
+        box-sizing: border-box;
+        background: #FFFDF5;
+        border: 1px solid #E8DCA8;
+        border-radius: 8px;
+        list-style: none;
+    }
+
+        .feature-container .product-item,
+        .list-container .product-item {
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            padding: 10px;
+            background: #FFFDF5;
+            border: 1px solid #E8DCA8;
+            border-radius: 8px;
+        }
+
+            .feature-container .product-item img,
+            .list-container .product-item img {
+                display: block;
+                width: 100%;
+                height: 150px;
+                max-width: 100%;
+                object-fit: contain;
+                padding: 4px;
+                box-sizing: border-box;
+                background: #FFFFFF;
+            }
+
+        .feature-container .prodName,
+        .list-container .prodName {
+            color: #66551A;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .feature-container .prodPrice,
+        .list-container .prodPrice {
+            color: #A98B12;
+            font-weight: bold;
+        }
+
+    @@media (max-width: 900px) {
+        .feature-container,
+        .list-container {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 500px) {
+        .feature-container,
+        .list-container {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+    /* Khung sản phẩm cuộn ngang */
+    .product-slider {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 10px 4px 16px;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: auto;
+        scrollbar-color: #D4B83F #FFF8DF;
+    }
+
+        .product-slider::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .product-slider::-webkit-scrollbar-track {
+            background: #FFF8DF;
+            border-radius: 10px;
+        }
+
+        .product-slider::-webkit-scrollbar-thumb {
+            background: #D4B83F;
+            border-radius: 10px;
+        }
+
+            .product-slider::-webkit-scrollbar-thumb:hover {
+                background: #A98B12;
+            }
+
+        .product-slider .product-card {
+            flex: 0 0 calc((100% - 60px) / 6);
+            min-width: 180px;
+            scroll-snap-align: start;
+            box-sizing: border-box;
+        }
 </style>
 
 <h2 class="admin-index-title">TRANG QUẢN TRỊ</h2>
+
+@Html.Partial("PVFeatureProduct", Model)
+@Html.Partial("PVNewProduct", Model)

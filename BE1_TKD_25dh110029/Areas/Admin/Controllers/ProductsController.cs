@@ -19,15 +19,16 @@ namespace BE1_TKD_25dh110029.Areas.Admin.Controllers
         // GET: Admin/Products
 
 
+
         public ActionResult Index(
-            string searchTerm,
-            decimal? minPrice,
-            decimal? maxPrice,
-            string sortOrder,
-            int? page)
+        string searchTerm,
+        decimal? minPrice,
+        decimal? maxPrice,
+        string sortOrder,
+        int? categoryId,
+        int? page)
         {
             var model = new ProductSearchVM();
-
             var products = db.Products.AsQueryable();
 
             // 1. Tìm kiếm theo tên, mô tả hoặc danh mục
@@ -57,7 +58,23 @@ namespace BE1_TKD_25dh110029.Areas.Admin.Controllers
                     p => p.ProductPrice <= maxPrice.Value);
             }
 
-            // 4. Sắp xếp
+            // 4. Lọc theo danh mục
+            if (categoryId.HasValue)
+            {
+                products = products.Where(
+                    p => p.CategoryID == categoryId.Value);
+            }
+
+            // Đưa danh sách danh mục lên dropdown
+            ViewBag.CategoryID = new SelectList(
+                db.Categories.OrderBy(c => c.CategoryName).ToList(),
+                "CategoryID",
+                "CategoryName",
+                categoryId);
+
+            ViewBag.SelectedCategoryID = categoryId;
+
+            // 5. Sắp xếp
             switch (sortOrder)
             {
                 case "name_asc":
@@ -85,9 +102,9 @@ namespace BE1_TKD_25dh110029.Areas.Admin.Controllers
 
             model.SortOrder = sortOrder;
 
-            // 5. Phân trang
+            // 6. Phân trang
             int pageNumber = page ?? 1;
-            int pageSize = 2;
+            int pageSize = 4;
 
             model.PageNumber = pageNumber;
             model.PageSize = pageSize;

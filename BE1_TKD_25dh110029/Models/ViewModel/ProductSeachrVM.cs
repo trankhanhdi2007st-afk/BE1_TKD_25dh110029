@@ -19,7 +19,7 @@ namespace BE1_TKD_25dh110029.Models.ViewModel
 
         public int PageNumber { get; set; }
 
-        public int PageSize { get; set; } = 2;
+        public int PageSize { get; set; } = 6;
 
         public IPagedList<Product> Products { get; set; }
     }

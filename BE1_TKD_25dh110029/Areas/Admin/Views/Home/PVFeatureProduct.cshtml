@@ -1,0 +1,141 @@
+﻿
+@model BE1_TKD_25dh110029.Models.ViewModel.HomeProductVM
+
+<style>
+    .featureProd {
+        margin-bottom: 25px;
+    }
+
+        .featureProd h2 {
+            color: #66551A;
+            background-color: #F3E5AB;
+            border-left: 5px solid #D4B83F;
+            border-radius: 5px;
+            padding: 12px 18px;
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+    .feature-container {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 12px;
+        width: 100%;
+        padding: 14px;
+        margin: 0;
+        box-sizing: border-box;
+        background-color: #FFFDF5;
+        border: 1px solid #E8DCA8;
+        border-radius: 8px;
+    }
+
+    .fproduct-item {
+        min-width: 0;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+        background-color: #FFFFFF;
+        border: 1px solid #E8DCA8;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+        .fproduct-item:hover {
+            background-color: #FFF8DF;
+            border-color: #D4B83F;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(102, 85, 26, 0.12);
+        }
+
+        .fproduct-item a {
+            display: block;
+            width: 100%;
+        }
+
+        .fproduct-item img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: 140px;
+            object-fit: contain;
+            box-sizing: border-box;
+            padding: 4px;
+            background-color: #FFFFFF;
+        }
+
+        .fproduct-item .prodPrice {
+            color: #A98B12;
+            font-size: 15px;
+            font-weight: 700;
+            margin: 10px 0 6px;
+            overflow-wrap: anywhere;
+        }
+
+        .fproduct-item .prodName {
+            color: #66551A;
+            font-size: 14px;
+            font-weight: 700;
+            min-height: 38px;
+            overflow-wrap: anywhere;
+            margin: 6px 0;
+        }
+
+        .fproduct-item .prodCategory {
+            color: #66551A;
+            font-size: 13px;
+            margin: 8px 0 0;
+            overflow-wrap: anywhere;
+        }
+
+    @@media (max-width: 900px) {
+        .feature-container {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 500px) {
+        .feature-container {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .fproduct-item img {
+            height: 120px;
+        }
+    }
+</style>
+
+@if (Model.Products != null && Model.Products.Any())
+{
+    <section class="featureProd">
+        <h2>Sản phẩm nổi bật</h2>
+
+        <div class="feature-container">
+            @foreach (var product in Model.Products)
+            {
+                <div class="fproduct-item">
+                    <a href="@Url.Action("ProductDetail", "Home",
+                        new { id = product.ProductID })">
+                        <img src="@Url.Content(product.ProductImage ?? "")"
+                             alt="@product.ProductName" />
+                    </a>
+
+                    <p class="prodPrice">
+                        @Html.DisplayFor(m => product.ProductPrice)
+                    </p>
+
+                    <p class="prodName">
+                        @product.ProductName
+                    </p>
+
+                    <p class="prodCategory">
+                        @(product.Category != null
+                            ? product.Category.CategoryName
+                            : "")
+                    </p>
+                </div>
+            }
+        </div>
+    </section>
+}

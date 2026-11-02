@@ -1,0 +1,253 @@
+﻿
+
+@model BE1_TKD_25dh110029.Models.ViewModel.ProductSearchVM
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+<style>
+    .catalog {
+        background: #FFFDF5;
+        padding: 25px;
+        border-radius: 14px;
+    }
+
+    .catalog-title {
+        color: #66551A;
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+
+    .filter-box {
+        background: #FFF8DF;
+        border: 1px solid #E8D99B;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+        .filter-box h4 {
+            color: #66551A;
+            font-weight: bold;
+        }
+
+    .filter-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #D4B83F;
+        border-radius: 7px;
+        margin-bottom: 12px;
+    }
+
+    .gold-button {
+        background: #D4B83F;
+        color: #3D3510;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 7px;
+        font-weight: bold;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+    }
+
+    .product-card {
+        background: white;
+        border: 1px solid #E8D99B;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .product-image {
+        display: block;
+        height: 190px;
+        background: #FFF8DF;
+    }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+    .product-info {
+        padding: 15px;
+    }
+
+    .product-name {
+        color: #3D3510;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .product-price {
+        color: #A98B12;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    @@media(max-width: 700px) {
+        .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 9px;
+        margin: 30px 0;
+        padding: 0;
+        list-style: none;
+    }
+
+        .pagination li a,
+        .pagination li span {
+            display: block;
+            min-width: 42px;
+            padding: 10px 14px;
+            text-align: center;
+            border: 1px solid #E8D99B;
+            border-radius: 8px;
+            background: #FFF8DF;
+            color: #66551A;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .pagination li.active span {
+            background: #D4B83F;
+            color: #3D3510;
+            border-color: #D4B83F;
+        }
+
+        .pagination li a:hover {
+            background: #A98B12;
+            color: white;
+            border-color: #A98B12;
+        }
+
+        .pagination li.disabled span {
+            opacity: 0.4;
+        }
+
+</style>
+
+<div class="catalog">
+    <h2 class="catalog-title">DANH SÁCH SẢN PHẨM</h2>
+
+    @using (Html.BeginForm("ProductList", "Home", FormMethod.Get))
+    {
+        <div class="filter-box">
+            <h4>Bộ lọc sản phẩm</h4>
+
+            @Html.DropDownList(
+                "categoryId",
+                new SelectList(
+                    ViewBag.Categories,
+                    "CategoryID",
+                    "CategoryName",
+                    ViewBag.CategoryId
+                ),
+                "Tất cả danh mục",
+                new { @class = "filter-control" }
+            )
+
+
+            <input type="text"
+                   name="searchTerm"
+                   value="@Model.SearchTerm"
+                   class="filter-control"
+                   placeholder="Nhập tên sản phẩm..." />
+
+            <input type="number"
+                   name="minPrice"
+                   value="@Model.MinPrice"
+                   class="filter-control"
+                   placeholder="Giá thấp nhất" />
+
+            <input type="number"
+                   name="maxPrice"
+                   value="@Model.MaxPrice"
+                   class="filter-control"
+                   placeholder="Giá cao nhất" />
+
+            <select name="sortOrder" class="filter-control">
+                <option value="">Mới nhất</option>
+                <option value="price_asc"
+                        @(Model.SortOrder == "price_asc" ? "selected" : "")>
+                    Giá tăng dần
+                </option>
+                <option value="price_desc"
+                        @(Model.SortOrder == "price_desc" ? "selected" : "")>
+                    Giá giảm dần
+                </option>
+            </select>
+
+            <button type="submit" class="gold-button">
+                Áp dụng bộ lọc
+            </button>
+        </div>
+    }
+
+    @if (Model.Products != null && Model.Products.Any())
+    {
+        <div class="product-grid">
+            @foreach (var product in Model.Products)
+            {
+                <article class="product-card">
+                    <a class="product-image"
+                       href="@Url.Action("ProductDetail", "Home",
+                           new { id = product.ProductID })">
+                        <img src="@Url.Content(
+                            string.IsNullOrWhiteSpace(product.ProductImage)
+                            ? "~/Content/no-image.svg"
+                            : product.ProductImage)"
+                             alt="@product.ProductName" />
+                    </a>
+
+                    <div class="product-info">
+                        <a class="product-name"
+                           href="@Url.Action("ProductDetail", "Home",
+                               new { id = product.ProductID })">
+                            @product.ProductName
+                        </a>
+
+                        <div class="product-price">
+                            @product.ProductPrice.ToString("N0") đ
+                        </div>
+
+                        <div>
+                            @(product.Category == null
+                                ? "Sản phẩm"
+                                : product.Category.CategoryName)
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+
+        <div style="margin-top:25px;">
+            @Html.PagedListPager(Model.Products,
+    page => Url.Action("ProductList", new
+    {
+        page,
+        categoryId = ViewBag.CategoryId,
+        searchTerm = Model.SearchTerm,
+        minPrice = Model.MinPrice,
+        maxPrice = Model.MaxPrice,
+        sortOrder = Model.SortOrder
+    }))
+        </div>
+    }
+    else
+    {
+        <p>Không tìm thấy sản phẩm phù hợp.</p>
+    }
+</div>

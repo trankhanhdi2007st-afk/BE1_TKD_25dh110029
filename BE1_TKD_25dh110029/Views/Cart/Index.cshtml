@@ -1,0 +1,220 @@
+﻿
+
+@model BE1_TKD_25dh110029.Models.ViewModel.Cart
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+<style>
+    .cart-page {
+        background: #FFFDF5;
+        padding: 35px 0;
+        min-height: 500px;
+        color: #66551A;
+    }
+
+    .cart-title {
+        color: #66551A;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    .cart-table {
+        width: 100%;
+        background: white;
+        border: 1px solid #E8DCA8;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .cart-table th {
+            background: #F3E5AB;
+            color: #66551A;
+            padding: 15px;
+        }
+
+        .cart-table td {
+            padding: 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid #F1E8C8;
+        }
+
+    .cart-img {
+        width: 85px;
+        height: 85px;
+        object-fit: contain;
+        background: #FFF8DF;
+        border-radius: 8px;
+    }
+
+    .cart-price {
+        color: #A98B12;
+        font-weight: bold;
+    }
+
+    .cart-input {
+        width: 75px;
+        padding: 7px;
+        border: 1px solid #D4B83F;
+        border-radius: 6px;
+    }
+
+    .gold-btn {
+        background: #D4B83F;
+        color: white;
+        border: none;
+        padding: 9px 16px;
+        border-radius: 7px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .gold-btn:hover {
+            background: #A98B12;
+            color: white;
+        }
+
+    .cart-summary {
+        background: #FFF8DF;
+        border: 1px solid #E8DCA8;
+        border-radius: 12px;
+        padding: 22px;
+        margin-top: 25px;
+        text-align: right;
+    }
+
+    .cart-total {
+        color: #A98B12;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .empty-cart {
+        background: white;
+        padding: 45px;
+        text-align: center;
+        border-radius: 12px;
+    }
+
+    .remove-btn {
+        background: #A94442;
+        color: white;
+        border: none;
+        padding: 7px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="cart-page">
+    <div class="container">
+
+        <h2 class="cart-title">GIỎ HÀNG CỦA BẠN</h2>
+
+        @if (Model == null || Model.Items == null || !Model.Items.Any())
+        {
+            <div class="empty-cart">
+                <h4>Giỏ hàng đang trống!</h4>
+                <p>Hãy chọn những sản phẩm yêu thích của bạn.</p>
+                <a href="@Url.Action("Index", "Home")" class="gold-btn">
+                    TIẾP TỤC MUA SẮM
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Đơn giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:12px;">
+                                        <img class="cart-img"
+                                             src="@Url.Content(string.IsNullOrWhiteSpace(item.ProductImage) ? "~/Content/no-image.svg" : item.ProductImage)"
+                                             alt="@item.ProductName" />
+                                        <strong>@item.ProductName</strong>
+                                    </div>
+                                </td>
+
+                                <td>@item.Category</td>
+
+                                <td class="cart-price">
+                                    @item.ProductPrice.ToString("N0") VP
+                                </td>
+
+                                <td>
+                                    @using (Html.BeginForm("UpdateQuantity", "Cart", FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", item.ProductID)
+
+                                        <input class="cart-input"
+                                               type="number"
+                                               name="quantity"
+                                               value="@item.Quantity"
+                                               min="1" />
+
+                                        <button type="submit" class="gold-btn">
+                                            Cập nhật
+                                        </button>
+                                    }
+                                </td>
+
+                                <td class="cart-price">
+                                    @item.Total.ToString("N0") VP
+                                </td>
+
+                                <td>
+                                    @using (Html.BeginForm("RemoveFromCart", "Cart", FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", item.ProductID)
+                                        <button type="submit" class="remove-btn">
+                                            Xóa
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cart-summary">
+                <h4>Tổng thanh toán</h4>
+
+                <div class="cart-total">
+                    @Model.Total.ToString("N0") đ
+                </div>
+
+                <div style="margin-top:20px;">
+                    @using (Html.BeginForm("ClearCart", "Cart", FormMethod.Post))
+                    {
+                        <button type="submit" class="remove-btn">
+                            XÓA TOÀN BỘ
+                        </button>
+                    }
+
+                    <a href="@Url.Action("Index", "Home")"
+                       class="gold-btn"
+                       style="display:inline-block;text-decoration:none;margin-left:8px;">
+                        TIẾP TỤC MUA SẮM
+                    </a>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

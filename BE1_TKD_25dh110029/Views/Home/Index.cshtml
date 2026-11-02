@@ -1,33 +1,305 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿
+@using System.Linq
+@model BE1_TKD_25dh110029.Models.ViewModel.HomeProductVM
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Trang chủ";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<style>
+        .home-banner {
+            background: linear-gradient(120deg, #3D3510, #8D7626);
+            color: white;
+            padding: 65px 45px;
+            border-radius: 15px;
+            margin-bottom: 35px;
+        }
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
-</main>
+        .home-banner h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .gold-button {
+            display: inline-block;
+            background: #D4B83F;
+            color: #3D3510;
+            padding: 12px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            border: none;
+            font-weight: bold;
+        }
+
+        .gold-button:hover {
+            background: #A98B12;
+            color: white;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0 35px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #D4B83F;
+            border-radius: 8px;
+        }
+
+        .product-section {
+            margin: 40px 0;
+        }
+
+        .product-section h2 {
+            color: #66551A;
+            font-weight: bold;
+            margin-bottom: 22px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .product-slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 15px;
+        }
+
+        .product-card {
+            min-width: 220px;
+            background: white;
+            border: 1px solid #E8D99B;
+            border-radius: 12px;
+            overflow: hidden;
+            padding-bottom: 15px;
+        }
+
+        .product-grid .product-card {
+            min-width: 0;
+        }
+
+        .product-image {
+            display: block;
+            height: 190px;
+            background: #FFF8DF;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-price {
+            color: #A98B12;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .product-name {
+            display: block;
+            color: #3D3510;
+            font-weight: bold;
+            margin: 8px 0;
+            text-decoration: none;
+        }
+
+        .product-category {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .empty-state {
+            padding: 25px;
+            background: #FFF8DF;
+            border-radius: 8px;
+        }
+
+        @@media(max-width: 700px) {
+        .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 9px;
+        margin: 30px 0;
+        padding: 0;
+        list-style: none;
+    }
+
+        .pagination li a,
+        .pagination li span {
+            display: block;
+            min-width: 42px;
+            padding: 10px 14px;
+            text-align: center;
+            border: 1px solid #E8D99B;
+            border-radius: 8px;
+            background: #FFF8DF;
+            color: #66551A;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .pagination li.active span {
+            background: #D4B83F;
+            color: #3D3510;
+            border-color: #D4B83F;
+        }
+
+        .pagination li a:hover {
+            background: #A98B12;
+            color: white;
+            border-color: #A98B12;
+        }
+
+        .pagination li.disabled span {
+            opacity: 0.4;
+        }
+
+</style>
+
+<section class="home-banner">
+    <h4>CHÀO MỪNG ĐẾN VỚI MY STORE</h4>
+    <h1>Khám phá sản phẩm yêu thích của bạn</h1>
+    <p>Chọn lựa dễ dàng – trải nghiệm mua sắm tiện lợi.</p>
+
+    <a class="gold-button"
+       href="@Url.Action("ProductList", "Home")">
+        BẮT ĐẦU MUA SẮM
+    </a>
+</section>
+
+<section>
+    <h2>Tìm kiếm sản phẩm</h2>
+
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+        <div class="search-form">
+            @Html.TextBox("searchTerm", Model.SearchTerm,
+                new
+                     {
+                    @class = "search-input",
+                    placeholder = "Nhập tên sản phẩm..."
+                })
+
+            <button type="submit" class="gold-button">
+                Tìm kiếm
+            </button>
+        </div>
+    }
+</section>
+
+<section class="product-section">
+    <h2>⭐ Sản phẩm nổi bật</h2>
+
+    @if (Model.Products != null && Model.Products.Any())
+    {
+        <div class="product-slider">
+            @foreach (var product in Model.Products)
+            {
+                <article class="product-card">
+                    <a class="product-image"
+                       href="@Url.Action("ProductDetail", "Home",
+                           new { id = product.ProductID })">
+                        <img src="@Url.Content(
+                            string.IsNullOrWhiteSpace(product.ProductImage)
+                            ? "~/Content/no-image.svg"
+                            : product.ProductImage)"
+                             alt="@product.ProductName" />
+                    </a>
+
+                    <div class="product-info">
+                        <div class="product-price">
+                            @product.ProductPrice.ToString("N0") VP
+                        </div>
+
+                        <a class="product-name"
+                           href="@Url.Action("ProductDetail", "Home",
+                               new { id = product.ProductID })">
+                            @product.ProductName
+                        </a>
+
+                        <div class="product-category">
+                            @(product.Category == null
+                                ? "Sản phẩm"
+                                : product.Category.CategoryName)
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="empty-state">Chưa có sản phẩm nổi bật.</p>
+    }
+</section>
+
+<section class="product-section">
+    <h2> Sản phẩm mới</h2>
+
+    @if (Model.NewProducts != null && Model.NewProducts.Any())
+    {
+        <div class="product-grid">
+            @foreach (var product in Model.NewProducts)
+            {
+                <article class="product-card">
+                    <a class="product-image"
+                       href="@Url.Action("ProductDetail", "Home",
+                           new { id = product.ProductID })">
+                        <img src="@Url.Content(
+                            string.IsNullOrWhiteSpace(product.ProductImage)
+                            ? "~/Content/no-image.svg"
+                            : product.ProductImage)"
+                             alt="@product.ProductName" />
+                    </a>
+
+                    <div class="product-info">
+                        <div class="product-price">
+                            @product.ProductPrice.ToString("N0") VP
+                        </div>
+
+                        <a class="product-name"
+                           href="@Url.Action("ProductDetail", "Home",
+                               new { id = product.ProductID })">
+                            @product.ProductName
+                        </a>
+
+                        <div class="product-category">
+                            @(product.Category == null
+                                ? "Sản phẩm"
+                                : product.Category.CategoryName)
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+
+        <div style="margin-top:25px;">
+            @Html.PagedListPager(Model.NewProducts,
+                page => Url.Action("Index",
+                    new { page, searchTerm = Model.SearchTerm }))
+        </div>
+    }
+    else
+    {
+        <p class="empty-state">Chưa có sản phẩm mới.</p>
+    }
+</section>

@@ -35,24 +35,46 @@ namespace BE1_TKD_25dh110029.Areas.Admin.Controllers
             return View(category);
         }
 
-        // GET: Admin/Categories1/Create
-        public ActionResult Create()
+// GET: Admin/Categories1/Create
+public ActionResult Create()
         {
             return View();
         }
 
         // POST: Admin/Categories1/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryID,CategoryName")] Category category)
+        public ActionResult Create(
+            [Bind(Include = "CategoryID,CategoryName")] Category category)
         {
             if (ModelState.IsValid)
             {
-                db.Categories.Add(category);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    // Thêm danh mục vào database
+                    db.Categories.Add(category);
+
+                    // Lưu dữ liệu
+                    db.SaveChanges();
+
+                    // Thành công thì quay về danh sách
+                    return RedirectToAction("Index");
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+                {
+                    var errors = ex.EntityValidationErrors
+                        .SelectMany(e => e.ValidationErrors)
+                        .Select(e => e.PropertyName + ": " + e.ErrorMessage);
+
+                    ViewBag.ValidationErrors = string.Join("\n", errors);
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+                {
+                    ViewBag.ValidationErrors =
+                        "Không thể lưu danh mục vào database. " +
+                        "Hãy kiểm tra dữ liệu và cấu trúc bảng SQL Server. " +
+                        ex.GetBaseException().Message;
+                }
             }
 
             return View(category);

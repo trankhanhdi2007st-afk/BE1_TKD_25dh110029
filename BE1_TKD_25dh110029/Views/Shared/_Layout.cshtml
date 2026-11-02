@@ -1,39 +1,196 @@
-﻿<!DOCTYPE html>
-<html>
+﻿
+@using System.Collections.Generic
+@using BE1_TKD_25dh110029.Models
+
+@{
+    var categories = ViewBag.Categories as IEnumerable<Category>
+                    ?? new List<Category>();
+}
+
+<!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewBag.Title - MY STORE</title>
+
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        body {
+            background: #FFFDF5;
+            color: #66551A;
+            margin: 0;
+        }
+
+        .top-banner {
+            background: #3D3510;
+            color: white;
+            text-align: center;
+            padding: 9px;
+            font-size: 13px;
+        }
+
+        .store-header {
+            background: #FFF8DF;
+            border-bottom: 1px solid #E8D99B;
+            padding: 18px 0;
+        }
+
+        .store-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .store-logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #66551A;
+            text-decoration: none;
+        }
+
+            .store-logo span {
+                color: #C5A72E;
+            }
+
+        .store-menu {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+            .store-menu a {
+                color: #66551A;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+                .store-menu a:hover {
+                    color: #A98B12;
+                }
+
+        .category-dropdown {
+            position: relative;
+        }
+
+        .category-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 190px;
+            background: white;
+            border: 1px solid #E8D99B;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.1);
+            z-index: 1000;
+        }
+
+        .category-dropdown:hover .category-list {
+            display: block;
+        }
+
+        .category-list a {
+            display: block;
+            padding: 10px 15px;
+        }
+
+            .category-list a:hover {
+                background: #FFF8DF;
+            }
+
+        .store-content {
+            max-width: 1200px;
+            min-height: 500px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .store-footer {
+            background: #3D3510;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+    </style>
+
+    @RenderSection("styles", required: false)
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+
+    <div class="top-banner">
+        MY STORE - MUA SẮM DỄ DÀNG - GIAO HÀNG TẬN NƠI
     </div>
+
+    <header class="store-header">
+        <div class="store-container">
+
+            <a class="store-logo" href="@Url.Action("Index", "Home")">
+                MY<span>STORE</span>
+            </a>
+
+            <nav class="store-menu">
+
+                <a href="@Url.Action("Index", "Home")">
+                    Trang chủ
+                </a>
+
+                <div class="category-dropdown">
+                    <a href="@Url.Action("ProductList", "Home")">
+                        Danh mục ▾
+                    </a>
+
+                    <div class="category-list">
+                        @foreach (var category in categories)
+                        {
+                            <a href="@Url.Action("ProductList", "Home",
+                                new { categoryId = category.CategoryID })">
+                                @category.CategoryName
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <a href="@Url.Action("ProductList", "Home")">
+                    Sản phẩm
+                </a>
+
+                <a href="@Url.Action("Login", "Account")">
+                    Tài khoản
+                </a>
+
+                <a href="@Url.Action("Index", "Cart")">
+                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                    Giỏ hàng
+                </a>
+                                     
+            </nav>
+        </div>
+    </header>
+
+    <main class="store-content">
+        @RenderBody()
+    </main>
+
+    <footer class="store-footer">
+        <h4>MY STORE</h4>
+        <p>Website bán hàng trực tuyến</p>
+        <p>© @DateTime.Now.Year MY STORE</p>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

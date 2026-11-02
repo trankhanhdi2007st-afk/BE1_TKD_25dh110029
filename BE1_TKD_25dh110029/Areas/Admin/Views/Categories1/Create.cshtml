@@ -1,20 +1,25 @@
-﻿```cshtml
+﻿
 @model BE1_TKD_25dh110029.Models.Category
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm danh mục";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <style>
+    .category-create-page {
+        color: #3D3510;
+    }
+
     .category-create-title {
         background-color: #F3E5AB;
         color: #66551A;
         padding: 12px 16px;
         border-left: 6px solid #D4B83F;
         border-radius: 6px;
-        margin-bottom: 20px;
-        font-weight: bold;
+        margin-bottom: 24px;
+        font-size: 28px;
+        font-weight: 750;
     }
 
     .category-create-form {
@@ -36,60 +41,86 @@
 
         .category-create-form .form-control {
             border: 1px solid #D9C77A;
-            border-radius: 5px;
+            border-radius: 7px;
+            background-color: #FFFDF5;
+            color: #3D3510;
             box-shadow: none;
+            min-height: 40px;
         }
 
             .category-create-form .form-control:focus {
                 border-color: #C5A72E;
-                box-shadow: 0 0 0 2px rgba(212, 184, 63, 0.2);
+                box-shadow: 0 0 0 3px rgba(212, 184, 63, .2);
             }
 
+    .category-create-submit,
     .category-create-back {
         display: inline-block;
-        margin-top: 15px;
-        padding: 7px 14px;
+        padding: 10px 18px;
+        border: 1px solid #C5A72E;
+        border-radius: 7px;
         background-color: #D4B83F;
         color: #3D3510 !important;
-        border: 1px solid #C5A72E;
-        border-radius: 5px;
+        font-weight: 700;
         text-decoration: none !important;
-        font-weight: 600;
-        transition: all 0.2s ease;
+        cursor: pointer;
+        transition: all .2s ease;
     }
 
+        .category-create-submit:hover,
         .category-create-back:hover {
             background-color: #A98B12;
+            border-color: #A98B12;
             color: #FFFFFF !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 85, 26, .2);
         }
 </style>
 
-<h2 class="category-create-title">THÊM SẢN PHẨM</h2>
+<div class="category-create-page">
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    <h2 class="category-create-title">
+        ＋ THÊM DANH MỤC
+    </h2>
 
-    <div class="form-horizontal category-create-form">
-        <h4>Product</h4>
-        <hr />
+    @if (ViewBag.ValidationErrors != null)
+    {
+        <div class="alert alert-danger">
+            <pre>@ViewBag.ValidationErrors</pre>
+        </div>
+    }
 
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @using (Html.BeginForm("Create", "Categories1",
+        new { area = "Admin" }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
-        @Html.Partial("PVcreateEditCategory", Model)
-    </div>
-}
+        <div class="form-horizontal category-create-form">
+            <h4>Thông tin danh mục</h4>
+            <hr />
 
-<div>
-    @Html.ActionLink(
-        "Back to List",
-        "Index",
-        null,
-        new { @class = "category-create-back" }
-    )
+            @Html.ValidationSummary(
+                true, "", new { @class = "text-danger" })
+
+            @Html.Partial("PVcreateEditCategory", Model)
+
+            <div class="category-create-actions">
+                <button type="submit" class="category-create-submit">
+                    + Tạo mới danh mục
+                </button>
+
+                @Html.ActionLink(
+                    "← Quay lại danh sách",
+                    "Index",
+                    "Categories1",
+                    new { area = "Admin" },
+                    new { @class = "category-create-back" }
+                )
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-```
