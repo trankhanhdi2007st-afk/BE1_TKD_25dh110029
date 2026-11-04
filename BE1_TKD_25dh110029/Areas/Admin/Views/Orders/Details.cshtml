@@ -1,0 +1,112 @@
+﻿@model BE1_TKD_25dh110029.Models.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .detail-page {
+        background: #FFFDF5;
+        padding: 25px;
+        border-radius: 14px;
+        color: #66551A;
+    }
+
+    .detail-title {
+        color: #66551A;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .detail-card {
+        background: white;
+        border: 1px solid #E8D99B;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 22px;
+    }
+
+        .detail-card h4 {
+            color: #927D35;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+    .detail-table th {
+        background: #F3E5AB;
+        color: #66551A;
+    }
+
+    .detail-table td, .detail-table th {
+        padding: 12px !important;
+        border-color: #F0E7C5 !important;
+    }
+
+    .back-button {
+        display: inline-block;
+        background: #C5A72E;
+        color: white !important;
+        padding: 9px 16px;
+        border-radius: 7px;
+        text-decoration: none !important;
+    }
+</style>
+
+<div class="detail-page">
+    <h2 class="detail-title">CHI TIẾT ĐƠN HÀNG #@Model.OrderID</h2>
+
+    <div class="detail-card">
+        <h4>Thông tin đơn hàng</h4>
+
+        <p><strong>Khách hàng:</strong> @(Model.Customer == null ? "Không xác định" : Model.Customer.CustomerName)</p>
+        <p><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy")</p>
+        <p><strong>Địa chỉ giao hàng:</strong> @Model.AddressDelivery</p>
+        <p><strong>Trạng thái thanh toán:</strong> @Model.PaymentStatus</p>
+        <p><strong>Tổng tiền:</strong> @Model.TotalAmount.ToString("N0") VNĐ</p>
+    </div>
+
+    <div class="detail-card">
+        <h4>Sản phẩm trong đơn hàng</h4>
+
+        <div class="table-responsive">
+            <table class="table table-bordered detail-table">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                    {
+                        foreach (var item in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>
+                                    @(item.Product == null ? "Không xác định" : item.Product.ProductName)
+                                </td>
+                                <td>@item.Quantity</td>
+                                <td>@item.UnitPrice.ToString("N0") VNĐ</td>
+                                <td>@((item.Quantity * item.UnitPrice).ToString("N0")) VNĐ</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                Đơn hàng chưa có sản phẩm.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @Html.ActionLink("← Quay lại danh sách", "Index", null,
+        new { @class = "back-button" })
+</div>

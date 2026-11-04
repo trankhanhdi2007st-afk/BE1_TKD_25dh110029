@@ -1,0 +1,232 @@
+﻿
+@model IEnumerable<BE1_TKD_25dh110029.Models.Order>
+
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .order-page {
+        background: #FFFDF5;
+        padding: 25px;
+        border-radius: 14px;
+        color: #66551A;
+    }
+
+    .order-title {
+        color: #66551A;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .order-subtitle {
+        color: #927D35;
+        margin-bottom: 20px;
+    }
+
+    .order-filter {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 22px;
+        padding: 15px;
+        background: #FFF8DF;
+        border: 1px solid #E8D99B;
+        border-radius: 10px;
+    }
+
+        .order-filter label {
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .order-filter select {
+            width: 230px;
+            height: 38px;
+            border: 1px solid #D4B83F;
+            border-radius: 6px;
+            padding: 5px 10px;
+            color: #66551A;
+            background: white;
+        }
+
+    .filter-button {
+        background: #C5A72E;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 9px 18px;
+        font-weight: 600;
+    }
+
+        .filter-button:hover {
+            background: #A98B12;
+        }
+
+    .reset-button {
+        color: #66551A;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .reset-button:hover {
+            color: #A98B12;
+            text-decoration: none;
+        }
+
+    .order-table {
+        width: 100%;
+        background: white;
+        border: 1px solid #E8D99B;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .order-table th {
+            background: #F3E5AB;
+            color: #66551A;
+            padding: 14px !important;
+            border-bottom: 2px solid #D4B83F !important;
+            white-space: nowrap;
+        }
+
+        .order-table td {
+            padding: 13px !important;
+            vertical-align: middle !important;
+            border-color: #F0E7C5 !important;
+            color: #66551A;
+        }
+
+        .order-table tr:hover {
+            background: #FFF8DF;
+        }
+
+    .order-detail {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 6px;
+        background: #C5A72E;
+        color: white !important;
+        text-decoration: none !important;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+    }
+
+        .order-detail:hover {
+            background: #A98B12;
+            color: white !important;
+        }
+
+    .order-empty {
+        text-align: center;
+        padding: 30px !important;
+        color: #927D35;
+    }
+</style>
+
+<div class="order-page">
+
+    <h2 class="order-title">QUẢN LÝ ĐƠN HÀNG</h2>
+
+    <p class="order-subtitle">
+        Theo dõi và quản lý các đơn hàng của khách hàng trong MY STORE
+    </p>
+
+    @using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+    {
+        <div class="order-filter">
+
+            <label for="paymentStatus">Lọc theo trạng thái:</label>
+
+            @Html.DropDownList(
+                "paymentStatus",
+                (SelectList)ViewBag.PaymentStatuses,
+                "Tất cả trạng thái",
+                new { @class = "form-control" }
+            )
+
+            <button type="submit" class="filter-button">
+                LỌC ĐƠN HÀNG
+            </button>
+
+            <a href="@Url.Action("Index", "Orders")" class="reset-button">
+                Xóa bộ lọc
+            </a>
+
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table order-table">
+            <thead>
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái thanh toán</th>
+                    <th>Địa chỉ giao hàng</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>#@item.OrderID</strong></td>
+
+                            <td>
+                                @(item.Customer == null
+                                    ? "Không xác định"
+                                    : item.Customer.CustomerName)
+                            </td>
+
+                            <td>@item.OrderDate.ToString("dd/MM/yyyy")</td>
+
+                            <td>@String.Format("{0:N0} VNĐ", item.TotalAmount)</td>
+
+                            <td>@item.PaymentStatus</td>
+
+                            <td>@item.AddressDelivery</td>
+
+                            <td>
+                                @Html.ActionLink(
+                                    "Chi tiết",
+                                    "Details",
+                                    new { id = item.OrderID },
+                                    new { @class = "order-detail" }
+                                )
+
+                                @Html.ActionLink(
+                                    "Cập nhật",
+                                    "Edit",
+                                    new { id = item.OrderID },
+                                    new
+                                         {
+                                        @class = "order-detail",
+                                        style = "margin-left:5px;"
+                                    }
+                                )
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="order-empty">
+                            Không tìm thấy đơn hàng phù hợp.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

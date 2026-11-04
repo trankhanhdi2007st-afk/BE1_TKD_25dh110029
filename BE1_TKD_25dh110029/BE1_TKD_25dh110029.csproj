@@ -136,14 +136,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminAuthorizeAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\Categories1Controller.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoriesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CustomersController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -186,7 +191,10 @@
     <Compile Include="Models\ViewModel\CartItem.cs" />
     <Compile Include="Models\ViewModel\CartService.cs" />
     <Compile Include="Models\ViewModel\HomeProductVM.cs" />
+    <Compile Include="Models\ViewModel\LoginVM.cs" />
     <Compile Include="Models\ViewModel\ProductSeachrVM.cs" />
+    <Compile Include="Models\ViewModel\ProfileInfoVM.cs" />
+    <Compile Include="Models\ViewModel\RegisterVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -254,6 +262,19 @@
     <Content Include="Areas\Admin\Views\Home\PVFeatureProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Home\PVNewProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Home\ProductDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\CustomerOrders.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Edit.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -282,6 +303,13 @@
     <Content Include="Views\Home\ProductList.cshtml" />
     <Content Include="Views\Home\ProductDetail.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\ProfileInfo.cshtml" />
+    <Content Include="Views\Cart\Checkout.cshtml" />
+    <Content Include="Views\Cart\OrderSuccess.cshtml" />
+    <Content Include="Views\Account\MyOrders.cshtml" />
+    <Content Include="Views\Account\OrderDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,108 @@
+﻿
+
+@model BE1_TKD_25dh110029.Models.Order
+
+@{
+    ViewBag.Title = "Cập nhật trạng thái đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .order-edit-page {
+        background: #FFFDF5;
+        padding: 30px;
+        border-radius: 15px;
+        color: #66551A;
+        max-width: 750px;
+        margin: 25px auto;
+    }
+
+    .order-edit-title {
+        color: #66551A;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    .order-edit-card {
+        background: white;
+        border: 1px solid #E8D99B;
+        border-radius: 12px;
+        padding: 25px;
+    }
+
+        .order-edit-card label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .order-edit-card select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D4B83F;
+            border-radius: 7px;
+            margin-bottom: 20px;
+        }
+
+    .gold-btn {
+        background: #C5A72E;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 7px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .gold-btn:hover {
+            background: #A98B12;
+            color: white;
+            text-decoration: none;
+        }
+
+    .back-btn {
+        color: #66551A;
+        margin-left: 10px;
+        text-decoration: none;
+    }
+</style>
+
+<div class="order-edit-page">
+    <h2 class="order-edit-title">CẬP NHẬT ĐƠN HÀNG #@Model.OrderID</h2>
+
+    <div class="order-edit-card">
+        <p><strong>Mã đơn hàng:</strong> #@Model.OrderID</p>
+        <p><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy")</p>
+        <p><strong>Tổng tiền:</strong> @Model.TotalAmount.ToString("N0") VNĐ</p>
+        <p><strong>Địa chỉ giao hàng:</strong> @Model.AddressDelivery</p>
+
+        <hr />
+
+        @using (Html.BeginForm("Edit", "Orders", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("orderID", Model.OrderID)
+
+            <label>Trạng thái thanh toán</label>
+
+            @Html.DropDownList(
+                "paymentStatus",
+                (SelectList)ViewBag.PaymentStatus,
+                new { @class = "form-control" }
+            )
+
+            @Html.ValidationMessage(
+                "PaymentStatus",
+                "",
+                new { @class = "text-danger" }
+            )
+
+            <button type="submit" class="gold-btn">
+                LƯU THAY ĐỔI
+            </button>
+
+            <a href="@Url.Action("Index", "Orders")" class="back-btn">
+                Quay lại
+            </a>
+        }
+    </div>
+</div>

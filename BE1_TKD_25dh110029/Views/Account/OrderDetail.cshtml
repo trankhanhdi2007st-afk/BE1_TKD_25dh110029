@@ -1,0 +1,202 @@
+﻿
+@model BE1_TKD_25dh110029.Models.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .order-detail-page {
+        background: #FFFDF5;
+        padding: 40px 0;
+        min-height: 550px;
+        color: #66551A;
+    }
+
+    .detail-card {
+        background: white;
+        border: 1px solid #E8DCA8;
+        border-radius: 15px;
+        padding: 28px;
+        box-shadow: 0 5px 18px rgba(102, 85, 26, 0.06);
+    }
+
+    .detail-title {
+        color: #66551A;
+        font-weight: 800;
+        margin-bottom: 25px;
+    }
+
+    .info-box {
+        background: #FFF8DF;
+        border: 1px solid #E8D99B;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+        .info-box p {
+            margin-bottom: 12px;
+        }
+
+            .info-box p:last-child {
+                margin-bottom: 0;
+            }
+
+    .detail-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+        .detail-table th {
+            background: #F3E5AB;
+            color: #66551A;
+            padding: 14px;
+            border-bottom: 2px solid #D4B83F;
+            white-space: nowrap;
+        }
+
+        .detail-table td {
+            padding: 14px;
+            border-bottom: 1px solid #F0E7C5;
+            vertical-align: middle;
+        }
+
+        .detail-table tbody tr:hover {
+            background: #FFF8DF;
+        }
+
+    .total-row {
+        text-align: right;
+        font-size: 20px;
+        font-weight: 800;
+        color: #A98B12;
+        margin-top: 22px;
+    }
+
+    .back-btn {
+        display: inline-block;
+        background: #C5A72E;
+        color: white !important;
+        padding: 10px 18px;
+        border-radius: 7px;
+        text-decoration: none !important;
+        font-weight: 700;
+        margin-top: 20px;
+    }
+
+        .back-btn:hover {
+            background: #A98B12;
+        }
+
+    .empty-detail {
+        text-align: center;
+        padding: 25px;
+        color: #927D35;
+    }
+</style>
+
+<div class="order-detail-page">
+    <div class="container">
+        <div class="detail-card">
+
+            <h2 class="detail-title">
+                CHI TIẾT ĐƠN HÀNG #@Model.OrderID
+            </h2>
+
+            <div class="info-box">
+                <p>
+                    <strong>Mã đơn hàng:</strong>
+                    #@Model.OrderID
+                </p>
+
+                <p>
+                    <strong>Ngày đặt:</strong>
+                    @Model.OrderDate.ToString("dd/MM/yyyy")
+                </p>
+
+                <p>
+                    <strong>Khách hàng:</strong>
+                    @(Model.Customer == null
+                        ? "Không xác định"
+                        : Model.Customer.CustomerName)
+                </p>
+
+                <p>
+                    <strong>Địa chỉ giao hàng:</strong>
+                    @Model.AddressDelivery
+                </p>
+
+                <p>
+                    <strong>Trạng thái thanh toán:</strong>
+                    @Model.PaymentStatus
+                </p>
+            </div>
+
+            <h4 style="font-weight:700; margin-bottom:18px;">
+                DANH SÁCH SẢN PHẨM
+            </h4>
+
+            <div class="table-responsive">
+                <table class="detail-table">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                        {
+                            foreach (var item in Model.OrderDetails)
+                            {
+                                <tr>
+                                    <td>
+                                        @(item.Product == null
+                                            ? "Sản phẩm không xác định"
+                                            : item.Product.ProductName)
+                                    </td>
+
+                                    <td>
+                                        @item.UnitPrice.ToString("N0") VNĐ
+                                    </td>
+
+                                    <td>@item.Quantity</td>
+
+                                    <td>
+                                        @String.Format(
+                                            "{0:N0} VNĐ",
+                                            item.UnitPrice * item.Quantity
+                                        )
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="empty-detail">
+                                    Không có sản phẩm trong đơn hàng.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="total-row">
+                Tổng tiền: @Model.TotalAmount.ToString("N0") VNĐ
+            </div>
+
+            <a href="@Url.Action("MyOrders", "Account")" class="back-btn">
+                ← QUAY LẠI ĐƠN HÀNG
+            </a>
+
+        </div>
+    </div>
+</div>

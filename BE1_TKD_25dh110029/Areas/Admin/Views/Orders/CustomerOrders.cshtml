@@ -1,0 +1,115 @@
+﻿@model IEnumerable<BE1_TKD_25dh110029.Models.Order>
+
+@{
+    ViewBag.Title = "Đơn hàng khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #FFFDF5;
+    }
+
+    .orders-container {
+        background: #FFF8DF;
+        padding: 25px;
+        border-radius: 15px;
+        border: 1px solid #E8D99B;
+    }
+
+    .orders-title {
+        color: #66551A;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .orders-table {
+        width: 100%;
+        background: white;
+        border-collapse: collapse;
+    }
+
+        .orders-table th {
+            background: #F3E5AB;
+            color: #66551A;
+            padding: 13px;
+        }
+
+        .orders-table td {
+            padding: 12px;
+            border-bottom: 1px solid #E8D99B;
+            color: #66551A;
+        }
+
+    .btn-order {
+        background: #C5A72E;
+        color: white;
+        padding: 7px 13px;
+        border-radius: 7px;
+        text-decoration: none;
+    }
+
+        .btn-order:hover {
+            background: #A98B12;
+            color: white;
+        }
+</style>
+
+<div class="orders-container">
+    <h2 class="orders-title">
+        Đơn hàng của khách hàng: @ViewBag.CustomerName
+    </h2>
+
+    <table class="orders-table">
+        <thead>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái thanh toán</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.OrderID</td>
+                        <td>@item.OrderDate.ToString("dd/MM/yyyy")</td>
+                        <td>@String.Format("{0:N0} VNĐ", item.TotalAmount)</td>
+                        <td>@item.PaymentStatus</td>
+                        <td>
+                            @Html.ActionLink(
+                                "Chi tiết",
+                                "Details",
+                                new { id = item.OrderID },
+                                new { @class = "btn-order" }
+                            )
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" style="text-align:center;padding:25px;">
+                        Khách hàng này chưa có đơn hàng nào.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+
+    @Html.ActionLink(
+        "← Quay lại khách hàng",
+        "Index",
+        "Customers",
+        null,
+        new { @class = "btn-order" }
+    )
+</div>

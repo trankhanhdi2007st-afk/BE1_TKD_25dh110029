@@ -1,0 +1,277 @@
+﻿
+@model IEnumerable<BE1_TKD_25dh110029.Models.User>
+
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .user-page {
+        background: #FFFDF5;
+        padding: 25px;
+        border-radius: 14px;
+        color: #66551A;
+    }
+
+    .user-title {
+        color: #66551A;
+        font-weight: 700;
+    }
+
+    .user-subtitle {
+        color: #927D35;
+        margin-bottom: 22px;
+    }
+
+    .user-search {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+        .user-search input {
+            max-width: 350px;
+            border: 1px solid #E8D99B;
+            border-radius: 7px;
+            padding: 9px 12px;
+        }
+
+    .user-btn {
+        background: #C5A72E;
+        color: white !important;
+        border: none;
+        padding: 9px 16px;
+        border-radius: 7px;
+        text-decoration: none !important;
+    }
+
+        .user-btn:hover {
+            background: #A98B12;
+        }
+
+    .user-table {
+        background: white;
+        border: 1px solid #E8D99B;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .user-table th {
+            background: #F3E5AB;
+            color: #66551A;
+            padding: 14px !important;
+            border-bottom: 2px solid #D4B83F !important;
+        }
+
+        .user-table td {
+            padding: 14px !important;
+            vertical-align: middle !important;
+            border-color: #F0E7C5 !important;
+        }
+
+        .user-table tr:hover {
+            background: #FFF8DF;
+        }
+
+    .user-role {
+        display: inline-block;
+        background: #FFF0BD;
+        color: #80650B;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    .user-pagination {
+        margin-top: 20px;
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+    }
+
+        .user-pagination a,
+        .user-pagination span {
+            padding: 8px 13px;
+            border-radius: 6px;
+            background: #F3E5AB;
+            color: #66551A;
+            text-decoration: none;
+        }
+
+        .user-pagination .active {
+            background: #C5A72E;
+            color: white;
+        }
+    .user-btn {
+        display: inline-block;
+        background: #C5A72E;
+        color: white !important;
+        border: none;
+        padding: 9px 16px;
+        border-radius: 7px;
+        text-decoration: none !important;
+    }
+
+        .user-btn:hover {
+            background: #A98B12;
+        }
+    .user-table th a,
+    .user-table th a:visited,
+    .user-table th a:hover,
+    .user-table th a:active {
+        color: #66551A !important;
+        text-decoration: none !important;
+    }
+
+        .user-table th a:hover {
+            color: #A98B12 !important;
+        }
+    .user-delete-btn {
+        display: inline-block;
+        background: #B94B36;
+        color: white !important;
+        padding: 9px 16px;
+        border-radius: 7px;
+        text-decoration: none !important;
+        margin-left: 5px;
+    }
+
+        .user-delete-btn:hover {
+            background: #963A29;
+        }
+</style>
+
+<div class="user-page">
+
+    <h2 class="user-title">QUẢN LÝ TÀI KHOẢN</h2>
+
+    <p class="user-subtitle">
+        Tìm kiếm, sắp xếp và quản lý tài khoản người dùng MY STORE
+    </p>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <p>
+        @Html.ActionLink("+ Thêm tài khoản", "Create", null,
+            new { @class = "user-btn" })
+    </p>
+
+    @using (Html.BeginForm("Index", "Users", FormMethod.Get))
+    {
+        <div class="user-search">
+            <input type="text"
+                   name="searchString"
+                   value="@ViewBag.CurrentFilter"
+                   placeholder="Nhập tên đăng nhập..." />
+
+            <button type="submit" class="user-btn">
+                Tìm kiếm
+            </button>
+
+            @Html.ActionLink("Làm mới", "Index", null,
+                new { @class = "user-btn" })
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table user-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>
+                        @Html.ActionLink("Tên đăng nhập",
+                            "Index",
+                            new
+                                 {
+                                searchString = ViewBag.CurrentFilter,
+                                sortOrder = ViewBag.SortOrder == "username_desc"
+                                    ? ""
+                                    : "username_desc"
+                            })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Vai trò",
+                            "Index",
+                            new
+                                 {
+                                searchString = ViewBag.CurrentFilter,
+                                sortOrder = "role"
+                            })
+                    </th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    var stt = ((int)ViewBag.CurrentPage - 1) * 8 + 1;
+
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            <td><strong>@item.Username</strong></td>
+                            <td>
+                                <span class="user-role">@item.UserRole</span>
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Sửa", "Edit",
+                                    new { id = item.Username },
+                                    new { @class = "user-btn" })
+
+                                @Html.ActionLink("Xóa", "Delete",
+                                    new { id = item.Username },
+                                    new { @class = "user-delete-btn" })
+                            </td>
+                        </tr>
+
+                        stt++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            Không tìm thấy tài khoản nào.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <div class="user-pagination">
+            @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+            {
+                if (i == (int)ViewBag.CurrentPage)
+                {
+                    <span class="active">@i</span>
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        i.ToString(),
+                        "Index",
+                        new
+                             {
+                            page = i,
+                            searchString = ViewBag.CurrentFilter,
+                            sortOrder = ViewBag.SortOrder
+                        })
+                }
+            }
+        </div>
+    }
+
+</div>

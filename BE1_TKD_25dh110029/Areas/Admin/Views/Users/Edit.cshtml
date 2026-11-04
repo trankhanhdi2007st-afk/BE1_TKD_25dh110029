@@ -1,0 +1,108 @@
+﻿
+@model BE1_TKD_25dh110029.Models.User
+
+@{
+    ViewBag.Title = "Sửa tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .user-form {
+        background: #FFFDF5;
+        padding: 28px;
+        border-radius: 14px;
+        max-width: 520px;
+        color: #66551A;
+    }
+
+        .user-form h2 {
+            color: #66551A;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .user-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .user-form input,
+        .user-form select {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            height: 44px;
+            border: 1px solid #E8D99B;
+            border-radius: 8px;
+            padding: 10px 13px;
+            margin-bottom: 20px;
+            background: white;
+        }
+
+            .user-form input:focus,
+            .user-form select:focus {
+                outline: none;
+                border-color: #C5A72E;
+            }
+
+    .btn-gold {
+        background: #C5A72E;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 7px;
+    }
+
+        .btn-gold:hover {
+            background: #A98B12;
+        }
+
+    .error-text {
+        color: #B44432;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="user-form">
+
+    <h2>SỬA TÀI KHOẢN</h2>
+
+    @using (Html.BeginForm("Edit", "Users", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.Hidden("id", Model.Username)
+
+        if (ViewBag.ErrorMessage != null)
+        {
+            <p class="error-text">@ViewBag.ErrorMessage</p>
+        }
+
+        <label>Tên đăng nhập</label>
+        <input type="text" value="@Model.Username" readonly />
+
+        <label>Mật khẩu mới</label>
+        <input type="password"
+               name="password"
+               placeholder="Để trống nếu không muốn đổi" />
+
+        <label>Vai trò</label>
+        <select name="userRole" required>
+            <option value="A" @(Model.UserRole == "A" ? "selected" : "")>
+                Admin (A)
+            </option>
+            <option value="C" @(Model.UserRole == "C" ? "selected" : "")>
+                Customer (C)
+            </option>
+        </select>
+
+        <button type="submit" class="btn-gold">
+            Lưu thay đổi
+        </button>
+
+        @Html.ActionLink("Quay lại", "Index", null,
+            new { @class = "btn btn-default" })
+    }
+</div>
+

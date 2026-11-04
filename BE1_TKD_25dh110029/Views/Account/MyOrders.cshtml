@@ -1,0 +1,208 @@
+﻿
+@model IEnumerable<BE1_TKD_25dh110029.Models.Order>
+
+@{
+    ViewBag.Title = "Đơn hàng của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .my-orders {
+        background: #FFFDF5;
+        min-height: 550px;
+        padding: 40px 0;
+        color: #66551A;
+    }
+
+    .orders-card {
+        background: white;
+        border: 1px solid #E8DCA8;
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 5px 18px rgba(102, 85, 26, 0.06);
+    }
+
+    .orders-title {
+        color: #66551A;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .orders-subtitle {
+        color: #927D35;
+        margin-bottom: 25px;
+    }
+
+    .orders-count {
+        display: inline-block;
+        background: #FFF3C4;
+        color: #806817;
+        padding: 7px 14px;
+        border-radius: 20px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+        .orders-table th {
+            background: #F3E5AB;
+            padding: 15px;
+            color: #66551A;
+            white-space: nowrap;
+            border-bottom: 2px solid #D4B83F;
+        }
+
+        .orders-table td {
+            padding: 15px;
+            border-bottom: 1px solid #F0E7C5;
+            vertical-align: middle;
+        }
+
+        .orders-table tbody tr:hover {
+            background: #FFF8DF;
+        }
+
+    .order-btn {
+        display: inline-block;
+        background: #C5A72E;
+        color: white !important;
+        padding: 8px 15px;
+        border-radius: 7px;
+        text-decoration: none !important;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+        .order-btn:hover {
+            background: #A98B12;
+        }
+
+    .order-status {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        background: #FFF3CD;
+        color: #856404;
+    }
+
+    .empty-orders {
+        text-align: center;
+        padding: 55px 20px;
+    }
+
+        .empty-orders h4 {
+            color: #66551A;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .empty-orders p {
+            color: #927D35;
+            margin-bottom: 22px;
+        }
+
+    .back-shopping {
+        display: inline-block;
+        background: #C5A72E;
+        color: white !important;
+        padding: 11px 20px;
+        border-radius: 8px;
+        text-decoration: none !important;
+        font-weight: 700;
+    }
+
+        .back-shopping:hover {
+            background: #A98B12;
+        }
+</style>
+
+<div class="my-orders">
+    <div class="container">
+        <div class="orders-card">
+
+            <h2 class="orders-title">ĐƠN HÀNG CỦA TÔI</h2>
+
+            <p class="orders-subtitle">
+                Theo dõi lịch sử mua hàng và trạng thái đơn hàng của bạn.
+            </p>
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="orders-count">
+                    Tổng số đơn hàng: @Model.Count()
+                </div>
+
+                <div class="table-responsive">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Ngày đặt</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td><strong>#@item.OrderID</strong></td>
+
+                                    <td>
+                                        @item.OrderDate.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            @item.TotalAmount.ToString("N0") VNĐ
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        <span class="order-status">
+                                            @item.PaymentStatus
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @Html.ActionLink(
+                                            "Xem chi tiết",
+                                            "OrderDetail",
+                                            new { id = item.OrderID },
+                                            new { @class = "order-btn" }
+                                        )
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-orders">
+                    <h4>Bạn chưa có đơn hàng nào!</h4>
+                    <p>Hãy khám phá sản phẩm và đặt đơn hàng đầu tiên nhé.</p>
+
+                    @Html.ActionLink(
+                        "TIẾP TỤC MUA SẮM",
+                        "Index",
+                        "Home",
+                        null,
+                        new { @class = "back-shopping" }
+                    )
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

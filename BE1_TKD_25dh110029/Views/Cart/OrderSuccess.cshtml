@@ -1,0 +1,121 @@
+﻿
+
+@model BE1_TKD_25dh110029.Models.Order
+
+@{
+    ViewBag.Title = "Đặt hàng thành công";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .success-page {
+        background: #FFFDF5;
+        min-height: 650px;
+        padding: 60px 15px;
+        color: #66551A;
+    }
+
+    .success-card {
+        max-width: 700px;
+        margin: auto;
+        padding: 40px;
+        background: white;
+        border: 1px solid #E8DCA8;
+        border-radius: 18px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(102,85,26,.08);
+    }
+
+    .success-icon {
+        width: 85px;
+        height: 85px;
+        margin: 0 auto 20px;
+        background: #F3E5AB;
+        color: #A98B12;
+        border-radius: 50%;
+        font-size: 48px;
+        line-height: 85px;
+    }
+
+    .success-title {
+        color: #A98B12;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .order-info {
+        background: #FFF8DF;
+        padding: 22px;
+        border-radius: 12px;
+        text-align: left;
+        margin: 25px 0;
+    }
+
+        .order-info p {
+            margin-bottom: 12px;
+        }
+
+    .success-btn {
+        display: inline-block;
+        background: #C5A72E;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .success-btn:hover {
+            background: #A98B12;
+            color: white;
+        }
+</style>
+
+<div class="success-page">
+    <div class="success-card">
+
+        <div class="success-icon">✓</div>
+
+        <h2 class="success-title">ĐẶT HÀNG THÀNH CÔNG!</h2>
+
+        <p>Cảm ơn bạn đã mua sắm tại MY STORE.</p>
+        <p>Đơn hàng của bạn đã được ghi nhận.</p>
+
+        <div class="order-info">
+            <h4>Thông tin đơn hàng</h4>
+
+            <p>
+                <strong>Mã đơn hàng:</strong>
+                #@Model.OrderID
+            </p>
+
+            <p>
+                <strong>Ngày đặt:</strong>
+                @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")
+            </p>
+
+            <p>
+                <strong>Tổng thanh toán:</strong>
+                <strong style="color:#A98B12;">
+                    @Model.TotalAmount.ToString("N0") VNĐ
+                </strong>
+            </p>
+
+            <p>
+                <strong>Trạng thái:</strong>
+                @Model.PaymentStatus
+            </p>
+
+            <p>
+                <strong>Địa chỉ giao hàng:</strong>
+                @Model.AddressDelivery
+            </p>
+        </div>
+
+        <a href="@Url.Action("Index", "Home")"
+           class="success-btn">
+            TIẾP TỤC MUA SẮM
+        </a>
+
+    </div>
+</div>

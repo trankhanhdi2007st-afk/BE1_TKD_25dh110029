@@ -1,0 +1,201 @@
+﻿
+@model BE1_TKD_25dh110029.Models.ViewModel.ProfileInfoVM
+
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+}
+
+<style>
+    .profile-page {
+        background: #FFFDF5;
+        padding: 45px 15px;
+        min-height: 650px;
+    }
+
+    .profile-card {
+        max-width: 850px;
+        margin: auto;
+        padding: 35px;
+        background: white;
+        border: 1px solid #E8D99B;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(102,85,26,.08);
+    }
+
+    .profile-title {
+        text-align: center;
+        color: #66551A;
+        font-weight: 800;
+        margin-bottom: 30px;
+    }
+
+    .profile-section {
+        background: #FFF8DF;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+        .profile-section h4 {
+            color: #66551A;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+    .profile-label {
+        display: block;
+        color: #66551A;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    .profile-input {
+        width: 100%;
+        height: 43px;
+        box-sizing: border-box;
+        border: 1px solid #D4B83F;
+        border-radius: 7px;
+        padding: 9px 12px;
+        margin-bottom: 15px;
+    }
+
+        .profile-input:disabled {
+            background: #F5F0DD;
+        }
+
+    .profile-button {
+        background: #D4B83F;
+        color: #3D3510;
+        border: none;
+        border-radius: 7px;
+        padding: 11px 22px;
+        font-weight: 700;
+    }
+
+        .profile-button:hover {
+            background: #A98B12;
+            color: white;
+        }
+
+    .field-error {
+        color: #B33A3A;
+        display: block;
+        margin-top: -12px;
+        margin-bottom: 12px;
+    }
+</style>
+
+<div class="profile-page">
+    <div class="profile-card">
+
+        <h2 class="profile-title">THÔNG TIN TÀI KHOẢN</h2>
+
+        @if (TempData["ProfileSuccess"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["ProfileSuccess"]
+            </div>
+        }
+
+        @if (TempData["PasswordSuccess"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["PasswordSuccess"]
+            </div>
+        }
+
+        @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.Username)
+            @Html.HiddenFor(m => m.CustomerName)
+
+            <div class="profile-section">
+                <h4>Thông tin cá nhân</h4>
+
+                <label class="profile-label">Tên đăng nhập</label>
+                <input class="profile-input" value="@Model.Username" disabled />
+
+                <label class="profile-label">Họ và tên</label>
+                <input class="profile-input" value="@Model.CustomerName" disabled />
+
+                @Html.LabelFor(m => m.CustomerPhone,
+                    new { @class = "profile-label" })
+
+                @Html.TextBoxFor(m => m.CustomerPhone,
+                    new { @class = "profile-input", placeholder = "Số điện thoại" })
+
+                @Html.ValidationMessageFor(m => m.CustomerPhone,
+                    "", new { @class = "field-error" })
+
+                @Html.LabelFor(m => m.CustomerEmail,
+                    new { @class = "profile-label" })
+
+                @Html.TextBoxFor(m => m.CustomerEmail,
+                    new { @class = "profile-input", placeholder = "Email" })
+
+                @Html.ValidationMessageFor(m => m.CustomerEmail,
+                    "", new { @class = "field-error" })
+
+                @Html.LabelFor(m => m.CustomerAddress,
+                    new { @class = "profile-label" })
+
+                @Html.TextBoxFor(m => m.CustomerAddress,
+                    new { @class = "profile-input", placeholder = "Địa chỉ" })
+
+                <button type="submit" class="profile-button">
+                    CẬP NHẬT THÔNG TIN
+                </button>
+            </div>
+        }
+
+        @using (Html.BeginForm("ChangePassword", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="profile-section">
+                <h4>Đổi mật khẩu</h4>
+
+                @Html.LabelFor(m => m.CurrentPassword,
+                    new { @class = "profile-label" })
+
+                @Html.PasswordFor(m => m.CurrentPassword,
+                    new { @class = "profile-input", placeholder = "Mật khẩu hiện tại" })
+
+                @Html.ValidationMessageFor(m => m.CurrentPassword,
+                    "", new { @class = "field-error" })
+
+                @Html.LabelFor(m => m.NewPassword,
+                    new { @class = "profile-label" })
+
+                @Html.PasswordFor(m => m.NewPassword,
+                    new { @class = "profile-input", placeholder = "Mật khẩu mới" })
+
+                @Html.ValidationMessageFor(m => m.NewPassword,
+                    "", new { @class = "field-error" })
+
+                @Html.LabelFor(m => m.ConfirmNewPassword,
+                    new { @class = "profile-label" })
+
+                @Html.PasswordFor(m => m.ConfirmNewPassword,
+                    new { @class = "profile-input", placeholder = "Xác nhận mật khẩu mới" })
+
+                @Html.ValidationMessageFor(m => m.ConfirmNewPassword,
+                    "", new { @class = "field-error" })
+
+                <button type="submit" class="profile-button">
+                    ĐỔI MẬT KHẨU
+                </button>
+            </div>
+        }
+
+        <div style="text-align:center">
+            <a href="@Url.Action("Index", "Home")">
+                ← Quay lại trang chủ
+            </a>
+        </div>
+
+    </div>
+</div>
+

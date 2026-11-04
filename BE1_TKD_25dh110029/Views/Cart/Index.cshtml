@@ -176,6 +176,7 @@
                                 <td class="cart-price">
                                     @item.Total.ToString("N0") VP
                                 </td>
+                              
 
                                 <td>
                                     @using (Html.BeginForm("RemoveFromCart", "Cart", FormMethod.Post))
@@ -207,10 +208,16 @@
                         </button>
                     }
 
+
                     <a href="@Url.Action("Index", "Home")"
                        class="gold-btn"
                        style="display:inline-block;text-decoration:none;margin-left:8px;">
                         TIẾP TỤC MUA SẮM
+                    </a>
+                    <a href="@Url.Action("Checkout", "Cart")"
+                       class="gold-btn"
+                       style="display:inline-block;text-decoration:none;margin-left:8px;">
+                        TIẾN HÀNH THANH TOÁN
                     </a>
                 </div>
             </div>

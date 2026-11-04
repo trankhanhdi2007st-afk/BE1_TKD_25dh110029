@@ -1,0 +1,283 @@
+﻿
+@model IEnumerable<BE1_TKD_25dh110029.Models.Customer>
+
+@{
+    ViewBag.Title = "Quản lý khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .customer-page {
+        background: #FFFDF5;
+        padding: 25px;
+        border-radius: 14px;
+        color: #66551A;
+    }
+
+    .customer-title {
+        color: #66551A;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .customer-subtitle {
+        color: #927D35;
+        margin-bottom: 22px;
+    }
+
+    .customer-add, .customer-btn {
+        display: inline-block;
+        background: #C5A72E;
+        color: white !important;
+        padding: 9px 16px;
+        border-radius: 7px;
+        text-decoration: none !important;
+        border: none;
+    }
+
+        .customer-add:hover, .customer-btn:hover {
+            background: #A98B12;
+        }
+
+    .customer-search {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 15px 0 22px;
+    }
+
+        .customer-search input {
+            width: 300px;
+            max-width: 100%;
+            border: 1px solid #E8D99B;
+            border-radius: 7px;
+            padding: 9px 12px;
+        }
+
+    .customer-table {
+        width: 100%;
+        background: white;
+        border: 1px solid #E8D99B;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .customer-table th {
+            background: #F3E5AB;
+            color: #66551A;
+            padding: 14px !important;
+            border-bottom: 2px solid #D4B83F !important;
+            white-space: nowrap;
+        }
+
+            .customer-table th a,
+            .customer-table th a:visited,
+            .customer-table th a:hover {
+                color: #66551A !important;
+                text-decoration: none !important;
+            }
+
+        .customer-table td {
+            padding: 13px !important;
+            vertical-align: middle !important;
+            border-color: #F0E7C5 !important;
+            color: #66551A;
+        }
+
+        .customer-table tr:hover {
+            background: #FFF8DF;
+        }
+
+    .customer-action {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 6px;
+        margin: 2px;
+        text-decoration: none !important;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .action-edit {
+        background: #FFF0BD;
+        color: #80650B !important;
+    }
+
+    .action-detail {
+        background: #E8E2C8;
+        color: #66551A !important;
+    }
+
+    .action-delete {
+        background: #F8D7C8;
+        color: #963E27 !important;
+    }
+
+    .customer-empty {
+        text-align: center;
+        padding: 30px !important;
+        color: #927D35;
+    }
+
+    .customer-pagination {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+        .customer-pagination a,
+        .customer-pagination span {
+            padding: 8px 13px;
+            border-radius: 6px;
+            background: #F3E5AB;
+            color: #66551A;
+            text-decoration: none;
+        }
+
+        .customer-pagination .active {
+            background: #C5A72E;
+            color: white;
+        }
+</style>
+
+<div class="customer-page">
+
+    <h2 class="customer-title">QUẢN LÝ KHÁCH HÀNG</h2>
+
+    <p class="customer-subtitle">
+        Tìm kiếm, sắp xếp và quản lý thông tin khách hàng MY STORE
+    </p>
+
+    <p>
+        @Html.ActionLink("+ Thêm khách hàng", "Create", null,
+            new { @class = "customer-add" })
+    </p>
+
+    @using (Html.BeginForm("Index", "Customers", FormMethod.Get))
+    {
+        <div class="customer-search">
+
+            <input type="text"
+                   name="searchString"
+                   value="@ViewBag.CurrentFilter"
+                   placeholder="Nhập tên khách hàng..." />
+
+            <button type="submit" class="customer-btn">
+                Tìm kiếm
+            </button>
+
+            @Html.ActionLink("Làm mới", "Index", null,
+                new { @class = "customer-btn" })
+
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table customer-table">
+
+            <thead>
+                <tr>
+                    <th>
+                        @Html.ActionLink("Họ và tên", "Index",
+                            new
+                                 {
+                                searchString = ViewBag.CurrentFilter,
+                                sortOrder = ViewBag.SortOrder == "name_desc"
+                                    ? ""
+                                    : "name_desc"
+                            })
+                    </th>
+
+                    <th>Số điện thoại</th>
+
+                    <th>
+                        @Html.ActionLink("Email", "Index",
+                            new
+                                 {
+                                searchString = ViewBag.CurrentFilter,
+                                sortOrder = "email"
+                            })
+                    </th>
+
+                    <th>Địa chỉ</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.CustomerName</strong></td>
+                            <td>@item.CustomerPhone</td>
+                            <td>@item.CustomerEmail</td>
+                            <td>@item.CustomerAddress</td>
+
+                            <td>
+                                @(item.User == null ? "" : item.User.Username)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Sửa", "Edit",
+                                    new { id = item.CustomerID },
+                                    new { @class = "customer-action action-edit" })
+
+                                @Html.ActionLink("Chi tiết", "Details",
+                                    new { id = item.CustomerID },
+                                    new { @class = "customer-action action-detail" })
+
+                                @Html.ActionLink("Xóa", "Delete",
+                                    new { id = item.CustomerID },
+                                    new { @class = "customer-action action-delete" })
+                                @Html.ActionLink("Đơn hàng", "CustomerOrders", "Orders",
+                                    new { customerId = item.CustomerID },
+                                    new { @class = "customer-action action-detail" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="customer-empty">
+                            Không tìm thấy khách hàng nào.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <div class="customer-pagination">
+
+            @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+            {
+                if (i == (int)ViewBag.CurrentPage)
+                {
+                    <span class="active">@i</span>
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        i.ToString(),
+                        "Index",
+                        new
+                             {
+                            page = i,
+                            searchString = ViewBag.CurrentFilter,
+                            sortOrder = ViewBag.SortOrder
+                        })
+                }
+            }
+
+        </div>
+    }
+
+</div>

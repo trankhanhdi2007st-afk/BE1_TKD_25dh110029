@@ -1,0 +1,156 @@
+﻿
+@model BE1_TKD_25dh110029.Models.ViewModel.LoginVM
+
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<style>
+    .account-page {
+        background: #FFFDF5;
+        min-height: 620px;
+        padding: 65px 15px;
+    }
+
+    .login-card {
+        max-width: 450px;
+        margin: auto;
+        background: white;
+        padding: 38px;
+        border: 1px solid #E8DCA8;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(102, 85, 26, 0.08);
+    }
+
+    .login-title {
+        text-align: center;
+        color: #66551A;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .login-subtitle {
+        text-align: center;
+        color: #8A7A45;
+        margin-bottom: 30px;
+    }
+
+    .login-label {
+        color: #66551A;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    .login-input {
+        width: 100%;
+        height: 45px;
+        border: 1px solid #D4B83F;
+        border-radius: 7px;
+        padding: 10px 12px;
+        margin-bottom: 18px;
+    }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #A98B12;
+            box-shadow: 0 0 5px rgba(212, 184, 63, 0.3);
+        }
+
+    .login-button {
+        width: 100%;
+        background: #D4B83F;
+        color: #3D3510;
+        border: none;
+        border-radius: 8px;
+        padding: 13px;
+        font-weight: 800;
+        margin-top: 15px;
+    }
+
+        .login-button:hover {
+            background: #A98B12;
+            color: white;
+        }
+
+    .login-link {
+        text-align: center;
+        margin-top: 23px;
+        color: #66551A;
+    }
+
+    .field-error {
+        color: #B33A3A;
+        font-size: 13px;
+    }
+</style>
+
+<div class="account-page">
+    <div class="login-card">
+
+        <h2 class="login-title">ĐĂNG NHẬP</h2>
+
+        <p class="login-subtitle">
+            Chào mừng bạn quay trở lại MY STORE
+        </p>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "field-error" })
+
+            <div>
+                @Html.LabelFor(m => m.Username, new { @class = "login-label" })
+
+                @Html.TextBoxFor(m => m.Username,
+                    new
+                         {
+                        @class = "login-input",
+                        placeholder = "Nhập tên đăng nhập"
+                    })
+
+                @Html.ValidationMessageFor(m => m.Username, "",
+                    new { @class = "field-error" })
+            </div>
+
+            <div>
+                @Html.LabelFor(m => m.Password, new { @class = "login-label" })
+
+                @Html.PasswordFor(m => m.Password,
+                    new
+                         {
+                        @class = "login-input",
+                        placeholder = "Nhập mật khẩu"
+                    })
+
+                @Html.ValidationMessageFor(m => m.Password, "",
+                    new { @class = "field-error" })
+            </div>
+
+            <div>
+                @Html.CheckBoxFor(m => m.RememberMe)
+                <label for="RememberMe">Ghi nhớ đăng nhập</label>
+            </div>
+
+            <button type="submit" class="login-button">
+                ĐĂNG NHẬP
+            </button>
+        }
+
+        <div class="login-link">
+            Chưa có tài khoản?
+            <a href="@Url.Action("Register", "Account")">
+                Đăng ký ngay
+            </a>
+        </div>
+
+    </div>
+</div>
+

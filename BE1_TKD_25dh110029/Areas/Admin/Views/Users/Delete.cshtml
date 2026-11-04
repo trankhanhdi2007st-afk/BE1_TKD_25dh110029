@@ -1,0 +1,82 @@
+﻿
+@model BE1_TKD_25dh110029.Models.User
+
+@{
+    ViewBag.Title = "Xóa tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .delete-page {
+        background: #FFFDF5;
+        padding: 30px;
+        border-radius: 14px;
+        max-width: 600px;
+        color: #66551A;
+    }
+
+        .delete-page h2 {
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+    .delete-info {
+        background: white;
+        border: 1px solid #E8D99B;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+
+    .delete-btn {
+        background: #B94B36;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 7px;
+    }
+
+        .delete-btn:hover {
+            background: #963A29;
+        }
+
+    .back-btn {
+        display: inline-block;
+        background: #C5A72E;
+        color: white !important;
+        padding: 10px 18px;
+        border-radius: 7px;
+        text-decoration: none !important;
+        margin-left: 8px;
+    }
+</style>
+
+<div class="delete-page">
+
+    <h2>XÓA TÀI KHOẢN</h2>
+
+    <p>Bạn có chắc chắn muốn xóa tài khoản này không?</p>
+
+    <div class="delete-info">
+        <p><strong>Tên đăng nhập:</strong> @Model.Username</p>
+        <p><strong>Vai trò:</strong> @Model.UserRole</p>
+    </div>
+
+    <p style="color:#B94B36">
+        Lưu ý: Không thể xóa tài khoản đang liên kết với khách hàng.
+    </p>
+
+    @using (Html.BeginForm("Delete", "Users", new { id = Model.Username }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <button type="submit" class="delete-btn">
+            Xác nhận xóa
+        </button>
+
+        @Html.ActionLink("Quay lại", "Index", null,
+            new { @class = "back-btn" })
+    }
+
+</div>
+

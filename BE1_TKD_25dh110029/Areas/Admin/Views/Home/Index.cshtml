@@ -121,9 +121,170 @@
             scroll-snap-align: start;
             box-sizing: border-box;
         }
+    /* DASHBOARD THỐNG KÊ */
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin: 20px 0 30px;
+    }
+
+    .stat-card {
+        background: #FFFDF5;
+        border: 1px solid #E8DCA8;
+        border-left: 5px solid #D4B83F;
+        border-radius: 12px;
+        padding: 22px;
+        box-shadow: 0 4px 12px rgba(102, 85, 26, .06);
+        transition: .25s;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 7px 18px rgba(102, 85, 26, .12);
+        }
+
+    .stat-label {
+        color: #927D35;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .stat-number {
+        color: #66551A;
+        font-size: 27px;
+        font-weight: 800;
+    }
+
+    .stat-icon {
+        font-size: 25px;
+        margin-bottom: 10px;
+    }
+
+    .stat-card.revenue {
+        border-left-color: #279B70;
+    }
+
+    .stat-card.paid {
+        border-left-color: #279B70;
+    }
+
+    .stat-card.unpaid {
+        border-left-color: #D18B32;
+    }
+
+    @@media (max-width: 768px) {
+        .dashboard-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 450px) {
+        .dashboard-stats {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 
 <h2 class="admin-index-title">TRANG QUẢN TRỊ</h2>
 
+<div class="dashboard-stats">
+
+    <div class="stat-card">
+        <div class="stat-icon"></div>
+        <div class="stat-label">TỔNG SẢN PHẨM</div>
+        <div class="stat-number">
+            @ViewBag.TotalProducts
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon"></div>
+        <div class="stat-label">TỔNG KHÁCH HÀNG</div>
+        <div class="stat-number">
+            @ViewBag.TotalCustomers
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon"></div>
+        <div class="stat-label">TỔNG ĐƠN HÀNG</div>
+        <div class="stat-number">
+            @ViewBag.TotalOrders
+        </div>
+    </div>
+
+    <div class="stat-card revenue">
+        <div class="stat-icon"></div>
+        <div class="stat-label">TỔNG DOANH THU</div>
+        <div class="stat-number">
+            @String.Format("{0:N0} VNĐ", ViewBag.TotalRevenue)
+        </div>
+    </div>
+
+    <div class="stat-card paid">
+        <div class="stat-icon"></div>
+        <div class="stat-label">ĐƠN ĐÃ THANH TOÁN</div>
+        <div class="stat-number">
+            @ViewBag.PaidOrders
+        </div>
+    </div>
+
+    <div class="stat-card unpaid">
+        <div class="stat-icon"></div>
+        <div class="stat-label">ĐƠN CHƯA THANH TOÁN</div>
+        <div class="stat-number">
+            @ViewBag.UnpaidOrders
+        </div>
+    </div>
+
+</div>
+
 @Html.Partial("PVFeatureProduct", Model)
 @Html.Partial("PVNewProduct", Model)
+<div class="revenue-chart">
+    <h3>BIỂU ĐỒ DOANH THU THEO THÁNG</h3>
+    <canvas id="revenueChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const revenueLabels = @Html.Raw(
+        Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RevenueLabels)
+    );
+
+    const revenueData = @Html.Raw(
+        Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RevenueData)
+    );
+
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'bar',
+        data: {
+            labels: revenueLabels,
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: revenueData,
+                backgroundColor: '#D4B83F',
+                borderColor: '#A98B12',
+                borderWidth: 1,
+                borderRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: value => value.toLocaleString('vi-VN') + ' VNĐ'
+                    }
+                }
+            }
+        }
+    });
+</script>

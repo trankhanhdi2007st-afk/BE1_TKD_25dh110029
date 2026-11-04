@@ -8,6 +8,7 @@ namespace BE1_TKD_25dh110029
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new AdminAuthorizeAttribute());
         }
     }
 }
